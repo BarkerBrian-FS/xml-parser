@@ -8,6 +8,7 @@ function analyzeXML(xml) {
   const rootElement = Object.keys(parsedData)[0];
 
   return {
+    originalXml: xml,
     data: parsedData,
     metadata: {
       rootElement,
