@@ -1,13 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const { XMLParser } = require("fast-xml-parser");
 const { analyzeXml } = require("./xmlServiceservices/");
 
 const app = express();
 app.use(cors());
 app.use(express.text({ type: "application/xml" }));
-
-const parser = new XMLParser();
 
 const PORT = 5000;
 
