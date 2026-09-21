@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { analyzeXml } = require("./xmlServiceservices/");
+const { analyzeXML } = require("./services/xmlService");
 
 const app = express();
 app.use(cors());
@@ -15,15 +15,15 @@ app.get("/api/health", (req, res) => {
 });
 
 app.post("/api/xml/analyze", (req, res) => {
-  const parsedData = analyzeXml(req.body);
+  const result = analyzeXML(req.body);
 
   console.log("POST route reached");
 
   console.log(typeof req.body);
   console.log(req.body);
 
-  console.log(parsedData);
-  res.json(parsedData);
+  console.log(result);
+  res.json(result);
 });
 
 app.listen(PORT, () => {

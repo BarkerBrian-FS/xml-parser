@@ -2,10 +2,17 @@ const { XMLParser } = require("fast-xml-parser");
 
 const parser = new XMLParser();
 
-function analyzeXml(xml) {
+function analyzeXML(xml) {
   const parsedData = parser.parse(xml);
 
-  return parsedData;
+  const rootElement = Object.keys(parsedData)[0];
+
+  return {
+    data: parsedData,
+    metadata: {
+      rootElement,
+    },
+  };
 }
 
-module.exports = { analyzeXml };
+module.exports = { analyzeXML };
