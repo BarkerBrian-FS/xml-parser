@@ -43,4 +43,4 @@ function analyzeXML(xml) {
   };
 }
 
-module.exports = { analyzeXML, inspectObject };
+module.exports = { analyzeXML };
