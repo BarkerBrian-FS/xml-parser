@@ -1,26 +1,25 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const xmlData = `<employee>
-      <name>Brian</name>
-      <department>Engineering</department>
-    </employee>
-  `;
+  const [documents, setDocuments] = useState([]);
+
   useEffect(() => {
-    fetch("http://localhost:5000/api/xml/analyze", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/xml",
-      },
-      body: xmlData,
-    })
+    fetch("http://localhost:5000/api/xml/documents")
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        setDocuments(data);
+      });
   }, []);
   return (
     <>
-      <h1></h1>
+      <h1>XML Documents</h1>
+      {documents.map((doc) => (
+        <div key={doc._id}>
+          <h2>{doc.metadata.rootElement}</h2>
+          <pre>{doc.originalXml}</pre>
+        </div>
+      ))}
     </>
   );
 }
