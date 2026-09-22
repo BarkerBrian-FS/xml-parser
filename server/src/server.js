@@ -33,18 +33,25 @@ app.get("/api/xml/documents", async (req, res) => {
 });
 
 app.post("/api/xml/analyze", async (req, res) => {
-  console.log("POST route reached");
-
   try {
     const result = analyzeXML(req.body);
 
+    console.log("POST route reached");
+    console.log(typeof req.body);
+    console.log(req.body);
+
+    console.log("Analysis result:");
+    console.log(result);
+
     const document = await Document.create(result);
 
+    console.log("Saved document:");
     console.log(document);
 
     res.json(document);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+
     res.status(500).json({
       message: "Failed to save document",
     });
