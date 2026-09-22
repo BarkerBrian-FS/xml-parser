@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const { analyzeXML } = require("./services/xmlService");
 const connectDB = require("./config/db");
-const document = require("./models/Documents.js");
+const Document = require("./models/Documents.js");
 
 const app = express();
 app.use(cors());
@@ -21,7 +21,7 @@ app.get("/api/health", (req, res) => {
 
 app.get("/api/xml/documents", async (req, res) => {
   try {
-    const documents = await document.find();
+    const documents = await Document.find();
 
     res.json(documents);
   } catch (error) {
@@ -38,7 +38,7 @@ app.post("/api/xml/analyze", async (req, res) => {
   try {
     const result = analyzeXML(req.body);
 
-    const document = await document.create(result);
+    const document = await Document.create(result);
 
     console.log(document);
 
