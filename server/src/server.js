@@ -36,6 +36,10 @@ app.post("/api/xml/analyze", async (req, res) => {
   try {
     const result = analyzeXML(req.body);
 
+    if (result.valid === false) {
+      return res.status(400).json(result);
+    }
+
     console.log("POST route reached");
     console.log(typeof req.body);
     console.log(req.body);

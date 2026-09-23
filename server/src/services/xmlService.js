@@ -1,4 +1,4 @@
-const { XMLParser } = require("fast-xml-parser");
+const { XMLParser, XMLValidator } = require("fast-xml-parser");
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -53,6 +53,16 @@ function inspectObject(obj, elements, elementCounts, attributeCounts) {
 }
 
 function analyzeXML(xml) {
+  const validationResult = XMLValidator.validate(xml);
+
+  console.log(validationResult);
+  if (validationResult !== true) {
+    return {
+      valid: false,
+      error: validationResult.err,
+    };
+  }
+
   const parsedData = parser.parse(xml);
 
   const rootElement = Object.keys(parsedData)[0];
