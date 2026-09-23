@@ -2,6 +2,7 @@ const { XMLParser } = require("fast-xml-parser");
 
 const parser = new XMLParser({
   ignoreAttributes: false,
+  ignoreDeclaration: true,
 });
 
 function inspectObject(obj, elements, elementCounts, attributeCounts) {
