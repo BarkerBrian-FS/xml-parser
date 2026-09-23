@@ -79,3 +79,5 @@ const responseSchema = {
     "suggestedQuestions",
   ],
 };
+
+module.exports = { responseSchema };
