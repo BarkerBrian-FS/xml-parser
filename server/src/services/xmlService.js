@@ -26,7 +26,7 @@ function inspectObject(obj, elements, elementCounts, attributeCounts) {
         (attributeCounts.get(attributeName) || 0) + 1,
       );
     } else {
-      elements.push(keys[i]);
+      elements.add(keys[i]);
 
       if (Array.isArray(value)) {
         elementCounts.set(keys[i], value.length);
@@ -56,7 +56,7 @@ function analyzeXML(xml) {
 
   const rootElement = Object.keys(parsedData)[0];
 
-  const elements = [];
+  const elements = new Set();
   const elementCounts = new Map();
   const attributeCounts = new Map();
 
@@ -68,7 +68,7 @@ function analyzeXML(xml) {
     data: parsedData,
     metadata: {
       rootElement,
-      elements,
+      elements: [...elements],
       elementCounts: elementCountObject,
       attributeCounts: attributeCountObject,
     },
