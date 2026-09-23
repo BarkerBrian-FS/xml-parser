@@ -75,6 +75,7 @@ function analyzeXML(xml) {
   const elementCountObject = Object.fromEntries(elementCounts);
   const attributeCountObject = Object.fromEntries(attributeCounts);
   return {
+    valid: true,
     originalXml: xml,
     data: parsedData,
     metadata: {
