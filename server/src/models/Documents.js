@@ -17,7 +17,7 @@ const documentSchema = new mongoose.Schema(
       required: true,
     },
     aiAnalysis: {
-      type: String,
+      type: Object,
       required: true,
     },
   },

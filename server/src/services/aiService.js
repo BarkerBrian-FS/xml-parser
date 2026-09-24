@@ -14,7 +14,7 @@ async function generateWithRetry(request, attempts = 3) {
       }
       const delay = attempt * 2000;
 
-      console.log("Gemini unavailable. Retrying in ${delay / 1000} seconds...");
+      console.log(`Gemini unavailable. Retrying in ${delay / 1000} seconds...`);
 
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
@@ -53,22 +53,17 @@ ${JSON.stringify(metadata, null, 2)}
     model: MODEL,
     contents: prompt,
     config: {
-      responseFormat: {
-        text: {
-          responseMimeType: "application/json",
-          responseJsonSchema: responseSchema,
-        },
-      },
+      responseMimeType: "application/json",
+      responseSchema: responseSchema,
     },
   });
 
   console.log("Gemini raw response:");
   console.log(response.text);
 
-  return response.text;
-  // const result = JSON.parse(response.text);
+  const result = JSON.parse(response.text);
 
-  // return result;
+  return result;
 }
 
 const responseSchema = {
