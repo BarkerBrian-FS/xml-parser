@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { analyzeDocument } = require("./services/aiService.js");
 
 const express = require("express");
 const cors = require("cors");
@@ -39,13 +40,13 @@ app.post("/api/xml/analyze", async (req, res) => {
     if (result.valid === false) {
       return res.status(400).json(result);
     }
-
+    const analysis = await analyzeDocument(result.data, result.metadata);
     console.log("POST route reached");
     console.log(typeof req.body);
     console.log(req.body);
 
     console.log("Analysis result:");
-    console.log(result);
+    console.log(analysis);
 
     const document = await Document.create(result);
 
