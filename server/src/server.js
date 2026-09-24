@@ -48,7 +48,10 @@ app.post("/api/xml/analyze", async (req, res) => {
     console.log("Analysis result:");
     console.log(analysis);
 
-    const document = await Document.create(result);
+    const document = await Document.create({
+      ...result,
+      aiAnalysis: analysis,
+    });
 
     console.log("Saved document:");
     console.log(document);
