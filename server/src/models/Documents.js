@@ -16,6 +16,10 @@ const documentSchema = new mongoose.Schema(
       type: Object,
       required: true,
     },
+    aiAnalysis: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
