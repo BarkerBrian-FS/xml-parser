@@ -126,3 +126,22 @@
   margin-top: 8px;
   font-size: 14px;
 }
+
+.questions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.question-button {
+  padding: 10px 14px;
+  border: 1px solid #dfdfdf;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+.question-button:hover {
+  background: #f5f5f5;
+}

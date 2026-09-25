@@ -104,9 +104,15 @@ function App() {
               <>
                 <h4>Suggested Questions</h4>
 
-                {doc.aiAnalysis?.suggestedQuestions?.map((question, index) => (
-                  <p key={index}>{question}</p>
-                ))}
+                <div className="questions-list">
+                  {doc.aiAnalysis?.suggestedQuestions?.map(
+                    (question, index) => (
+                      <button className="question-button" key={index}>
+                        {question}
+                      </button>
+                    ),
+                  )}
+                </div>
               </>
             )}
           </div>
