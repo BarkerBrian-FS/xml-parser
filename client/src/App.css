@@ -36,3 +36,31 @@
   margin-bottom: 0;
   line-height: 1.6;
 }
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: reapeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  padding: 20px;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+}
+
+.stat-name {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+.stat-value {
+  margin: 0;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.stat-description {
+  margin-top: 8px;
+  font-size: 14px;
+}

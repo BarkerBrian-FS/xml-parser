@@ -75,14 +75,19 @@ function App() {
             {doc.aiAnalysis?.statistics?.length > 0 && (
               <>
                 <h4>Statistics</h4>
-
-                {doc.aiAnalysis?.statistics?.map((statistic, index) => (
-                  <div key={index}>
-                    <h4>{statistic.name}</h4>
-                    <p>{statistic.value}</p>
-                    <p>{statistic.description}</p>
-                  </div>
-                ))}
+                <div className="statistics-grid">
+                  {doc.aiAnalysis?.statistics?.map((statistic, index) => (
+                    <div className="stat-card" key={index}>
+                      <h4 className="stat-name">{statistic.name}</h4>
+                      <p className="stat-value">{statistic.value}</p>
+                      {statistic.description && (
+                        <p className="stat-description">
+                          {statistic.description}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </>
             )}
             {doc.aiAnalysis?.suggestedQuestions?.length > 0 && (
