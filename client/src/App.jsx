@@ -20,7 +20,7 @@ function App() {
       <div className="documents-container">
         {documents.map((doc) => (
           <div className="document-card" key={doc._id}>
-            <h2>{doc.metadata.rootElement}</h2>
+            <h2>Document: {doc.metadata.rootElement}</h2>
             <pre className="xml-viewer">{doc.originalXml}</pre>
             <div className="ai-analysis">
               <h3>AI Analysis</h3>
@@ -31,10 +31,10 @@ function App() {
                 </div>
                 <div className="overview-card">
                   <h4>Document Type</h4>
-                  <p>
+                  <span className="document-type-badge">
                     {doc.aiAnalysis?.documentType ||
                       "No document type provided"}
-                  </p>
+                  </span>
                 </div>
               </div>
               {doc.aiAnalysis?.entities?.length > 0 && (

@@ -48,6 +48,16 @@ body {
   margin-bottom: 24px;
   font-size: 24px;
 }
+
+.document-type-badge {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #eef2ff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .ai-analysis {
   margin-top: 24px;
   padding-top: 24px;
