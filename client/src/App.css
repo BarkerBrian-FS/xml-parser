@@ -37,6 +37,36 @@
   line-height: 1.6;
 }
 
+.entities-grid {
+  display: grid;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+}
+
+.entity-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+}
+.entity-card strong {
+  font-size: 16px;
+}
+.entity-card span {
+  font-size: 13px;
+  opacity: 0.7;
+}
+.entity-card p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .statistics-grid {
   display: grid;
   grid-template-columns: reapeat(4, 1fr);

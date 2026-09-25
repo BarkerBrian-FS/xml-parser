@@ -42,13 +42,15 @@ function App() {
               <>
                 <h4>Entities</h4>
 
-                {doc.aiAnalysis?.entities?.map((entity) => (
-                  <div key={entity.name}>
-                    <strong>{entity.name}</strong>
-                    <p>{entity.type}</p>
-                    <p>{entity.description}</p>
-                  </div>
-                ))}
+                <div className="entities-grid">
+                  {doc.aiAnalysis?.entities?.map((entity) => (
+                    <div className="entity-card" key={entity.name}>
+                      <strong>{entity.name}</strong>
+                      <span>{entity.type}</span>
+                      {entity.description && <p>{entity.description}</p>}
+                    </div>
+                  ))}
+                </div>
               </>
             )}
 
