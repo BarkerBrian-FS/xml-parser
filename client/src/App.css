@@ -83,6 +83,22 @@
   line-height: 1.5;
 }
 
+.warning-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.warning-item {
+  padding: 14px 16px;
+  border: 1px solid #dfdfdf;
+  border-radius: 8px;
+}
+.warning-item p {
+  margin: 0;
+  line-height: 1.5;
+}
+
 .statistics-grid {
   display: grid;
   grid-template-columns: reapeat(4, 1fr);

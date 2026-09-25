@@ -72,9 +72,13 @@ function App() {
               <>
                 <h4>Warnings</h4>
 
-                {doc.aiAnalysis?.warnings?.map((warning, index) => (
-                  <p key={index}>{warning}</p>
-                ))}
+                <div className="warning-list">
+                  {doc.aiAnalysis?.warnings?.map((warning, index) => (
+                    <div className="warnings-item" key={index}>
+                      <p> {warning}</p>
+                    </div>
+                  ))}
+                </div>
               </>
             )}
 
