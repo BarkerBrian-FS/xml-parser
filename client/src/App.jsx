@@ -58,9 +58,13 @@ function App() {
               <>
                 <h4>Insights</h4>
 
-                {doc.aiAnalysis?.insights?.map((insight, index) => (
-                  <p key={index}>{insight}</p>
-                ))}
+                <div className="insight-list">
+                  {doc.aiAnalysis?.insights?.map((insight, index) => (
+                    <div className="insight-item" key={index}>
+                      <p>{insight}</p>
+                    </div>
+                  ))}
+                </div>
               </>
             )}
 

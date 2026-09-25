@@ -67,6 +67,22 @@
   line-height: 1.5;
 }
 
+.insight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.insight-item {
+  padding: 14px 16px;
+  border: 1px solid #dfdfdf;
+  border-radius: 8px;
+}
+.insight-item p {
+  margin: 0;
+  line-height: 1.5;
+}
+
 .statistics-grid {
   display: grid;
   grid-template-columns: reapeat(4, 1fr);
