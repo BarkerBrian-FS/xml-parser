@@ -12,6 +12,25 @@ body {
   padding: 40px 24px;
 }
 
+.app.dark {
+  background: #0b0f19;
+  color: #e5e7eb;
+}
+.app.dark .document-card {
+  background: #1f2937;
+  border-color: #374151;
+}
+.app.dark .overview-card,
+.app.dark .entity-card,
+.app.dark .insight-item,
+.app.dark .warning-item,
+.app.dark .stat-card {
+  border-color: #374151;
+}
+.app.dark .document-type-badge {
+  background: #283646;
+  border-color: #2e3744;
+}
 .app > h1 {
   margin-top: 0;
   margin-bottom: 32px;
@@ -20,8 +39,9 @@ body {
 
 .xml-viewer {
   padding: 20px;
-  margin: 20px 0;
-  border: 1px solid #dfdfdf;
+  margin: 0 0 28px;
+  background: #0b0f19;
+  color: #e5e7eb;
   border-radius: 10px;
   overflow-x: auto;
   font-family: monospace;
@@ -52,7 +72,7 @@ body {
 .document-type-badge {
   display: inline-block;
   padding: 8px 12px;
-  border-radius: 20px;
+  border-radius: 10px;
   background: #eef2ff;
   font-size: 14px;
   font-weight: 600;

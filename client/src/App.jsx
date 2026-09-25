@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [documents, setDocuments] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/xml/documents")
@@ -14,7 +15,10 @@ function App() {
   }, []);
 
   return (
-    <main className="app">
+    <main className={`app ${darkMode ? "dark" : ""}`}>
+      <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
+        {darkMode ? "Light Mode" : "Dark Mode"}
+      </button>
       <h1>XML Documents</h1>
 
       <div className="documents-container">
