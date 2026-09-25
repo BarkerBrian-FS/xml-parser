@@ -65,6 +65,9 @@ function analyzeXML(xml) {
 
   const parsedData = parser.parse(xml);
 
+  console.log("Parsed XML:");
+  console.log(parsedData);
+
   const rootElement = Object.keys(parsedData)[0];
 
   const elements = new Set();
