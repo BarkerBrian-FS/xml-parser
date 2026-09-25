@@ -1,6 +1,38 @@
 .document-card {
-  border: 1px solid #ddd;
+  border: 1px solid #dfdfdf;
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
+}
+
+.ai-analysis {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #dfdfdf;
+}
+
+.ai-analysis h3 {
+  margin-bottom: 20px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.overview-card {
+  padding: 20px;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+}
+
+.overview-card h4 {
+  margin-top: 0;
+}
+
+.overview-card p {
+  margin-bottom: 0;
+  line-height: 1.6;
 }
