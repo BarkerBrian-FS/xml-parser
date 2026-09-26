@@ -37,7 +37,7 @@ Provide:
 3. Relevant entities found in the data, including people, organizations, locations, dates, identifiers, products, and other important concepts.
 4. Meaningful patterns, relationships, trends, or notable findings.
 5. Data quality issues, inconsistencies, missing values, unusual content, or other items that may require review. If none are found, return an empty warnings array.
-6. Useful statistics that can be directly calculated from the provided data. Do not calculate statistics when the required information is unavailable.
+6. Useful statistics that can be directly calculated from the provided data. Preserve any units associated with numeric values. If the XML provides a unit through an attribute or related field, include that unit in the statistic. Do not calculate statistics when the required information is unavailable.
 7. Useful follow-up questions a user could ask about the data.
 
 Preserve original values, field names, identifiers, dates, numbers, and entity names. Clearly distinguish facts found in the data from analytical observations.
