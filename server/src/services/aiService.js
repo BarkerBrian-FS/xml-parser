@@ -124,6 +124,7 @@ const responseSchema = {
               },
             ],
           },
+          unit: { type: "string" },
           description: {
             type: "string",
           },

@@ -46,7 +46,7 @@ app.post("/api/xml/analyze", async (req, res) => {
     console.log(req.body);
 
     console.log("Analysis result:");
-    console.log(analysis);
+    console.log(JSON.stringify(analysis, null, 2));
 
     const document = await Document.create({
       ...result,
@@ -54,7 +54,7 @@ app.post("/api/xml/analyze", async (req, res) => {
     });
 
     console.log("Saved document:");
-    console.log(document);
+    console.log(JSON.stringify(document, null, 2));
 
     res.json(document);
   } catch (error) {
