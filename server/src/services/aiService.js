@@ -30,6 +30,8 @@ async function analyzeDocument(data, metadata) {
 Analyze the provided XML data and its associated metadata.
 
 Use only the information contained in the provided data and metadata. Do not invent, assume, modify, rewrite, or omit information. If information is missing or uncertain, indicate that clearly.
+Never invent units or values. Only include a unit when it exists explicitly in the provided XML data or metadata. If no unit is provided, return only the original value.
+For statistics, always return the value as a string. Preserve the original numeric value exactly as provided in the data. Do not add units unless the unit is explicitly present in the data.
 
 Provide:
 1. A concise 2-3 sentence summary of the document and its main contents.
@@ -41,6 +43,22 @@ Provide:
 7. Useful follow-up questions a user could ask about the data.
 
 Preserve original values, field names, identifiers, dates, numbers, and entity names. Clearly distinguish facts found in the data from analytical observations.
+
+For every statistic, the "value" must contain ONLY the original value from the XML element.
+Do not append, prepend, convert, reinterpret, or invent units.
+For example, if the XML contains <fuelLevel unit="percent">73</fuelLevel>, return "73", not "73 percent", "73%", "73C", or any other variation.
+If a unit attribute exists, it may be mentioned in the description, but never modify the value itself.
+
+For entities, keep the "type" field concise and categorical, such as "Mission", "Person", "Location", "Spacecraft", or "Observation".
+Put additional details such as roles, identifiers, specialties, or descriptions in the "description" field.
+
+For entities, keep the "type" field short and categorical.
+Use values such as "Person", "Mission", "Location", "Spacecraft", "Observation", "Organization", or "Product".
+Put roles, identifiers, specialties, statuses, timestamps, and other additional information in the "description" field.
+Do not combine the entity type with its details.
+
+Do not infer causal relationships, correlations, or explanations unless they are explicitly supported by the provided data.
+If you identify a possible pattern, describe it as a possible pattern and do not state that one factor causes another.
 
 XML Data:
 ${JSON.stringify(data, null, 2)}
@@ -115,14 +133,7 @@ const responseSchema = {
             type: "string",
           },
           value: {
-            anyOf: [
-              {
-                type: "string",
-              },
-              {
-                type: "number",
-              },
-            ],
+            type: "string",
           },
           unit: { type: "string" },
           description: {
