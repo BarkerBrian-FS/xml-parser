@@ -6,6 +6,7 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [xmlContent, setXmlContent] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [error, setError] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
   function handleFileChange(event) {
@@ -24,8 +25,11 @@ function App() {
 
   async function handleAnalyze() {
     setIsAnalyzing(true);
+    setError("");
 
     try {
+      console.log("XML being sent:");
+      console.log(xmlContent);
       const response = await fetch("http://localhost:5000/api/xml/analyze", {
         method: "POST",
         headers: {
@@ -36,11 +40,16 @@ function App() {
 
       const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Analysis Failed");
+      }
+
       setDocuments((currentDocuments) => [data, ...currentDocuments]);
 
       console.log(data);
     } catch (error) {
       console.error("Analysis failed:", error);
+      setError(error.message);
     } finally {
       setIsAnalyzing(false);
     }
@@ -65,6 +74,9 @@ function App() {
         <h2>Upload XML Document</h2>
         <input type="file" accept=".xml" onChange={handleFileChange}></input>
         {xmlContent && <pre className="xml-preview">{xmlContent}</pre>}
+
+        {error && <p className="error-message">{error}</p>}
+
         <button onClick={handleAnalyze} disabled={isAnalyzing}>
           {isAnalyzing ? "Analyzing..." : "Analyze XML"}
         </button>
@@ -74,7 +86,7 @@ function App() {
       <div className="documents-container">
         {documents.map((doc) => (
           <div className="document-card" key={doc._id}>
-            <h2>Document: {doc.metadata.rootElement}</h2>
+            <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
             <pre className="xml-viewer">{doc.originalXml}</pre>
             <div className="ai-analysis">
               <h3>AI Analysis</h3>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orbitalMission>
+    <mission id="ORBIT-27" status="active">
+        <name>Project Aether</name>
+        <launchDate>2026-08-14</launchDate>
+        <destination>Europa</destination>
+
+        <crew>
+            <member role="Commander">
+                <name>Maya Chen</name>
+                <specialty>Astrobiology</specialty>
+            </member>
+
+            <member role="Engineer">
+                <name>Marcus Reed</name>
+                <specialty>Propulsion Systems</specialty>
+            </member>
+
+            <member role="Data Scientist">
+                <name>Elena Torres</name>
+                <specialty>Signal Analysis</specialty>
+            </member>
+        </crew>
+
+        <spacecraft>
+            <name>Aether One</name>
+            <model>AX-7</model>
+            <fuelLevel unit="percent">73</fuelLevel>
+
+            <systems>
+                <system name="Navigation" status="operational"/>
+                <system name="Communications" status="operational"/>
+                <system name="LifeSupport" status="operational"/>
+                <system name="RadiationShield" status="warning"/>
+            </systems>
+        </spacecraft>
+
+        <observations>
+            <observation id="OBS-001" priority="high">
+                <timestamp>2026-09-18T14:32:00Z</timestamp>
+                <location>Europa Orbit</location>
+                <signalStrength>87</signalStrength>
+                <finding>Unusual electromagnetic activity detected beneath the surface ice.</finding>
+            </observation>
+
+            <observation id="OBS-002" priority="medium">
+                <timestamp>2026-09-21T09:17:00Z</timestamp>
+                <location>Europa Orbit</location>
+                <signalStrength>64</signalStrength>
+                <finding>Surface temperature variation detected near the southern hemisphere.</finding>
+            </observation>
+
+            <observation id="OBS-003" priority="critical">
+                <timestamp>2026-09-25T22:41:00Z</timestamp>
+                <location>Europa Subsurface Region</location>
+                <signalStrength>96</signalStrength>
+                <finding>Recurring signal pattern detected at regular 11-minute intervals.</finding>
+            </observation>
+        </observations>
+
+        <missionMetrics>
+            <distanceTraveled unit="millionKm">482.7</distanceTraveled>
+            <remainingDistance unit="millionKm">116.3</remainingDistance>
+            <dataCollected unit="TB">18.6</dataCollected>
+            <anomaliesDetected>7</anomaliesDetected>
+        </missionMetrics>
+    </mission>
+</orbitalMission>
