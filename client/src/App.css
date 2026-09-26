@@ -3,6 +3,10 @@ body {
   font-family: Arial, sans-serif;
   background: #f5f7fa;
   color: #1f2937;
+  transition: background 0.2s ease;
+}
+body:has(.app.dark) {
+  background: #0b0f19;
 }
 
 .app {
@@ -16,6 +20,14 @@ body {
   background: #0b0f19;
   color: #e5e7eb;
 }
+.app.dark .question-button {
+  border-color: #4b5563;
+  background: #1f2937;
+  color: #e5e7eb;
+}
+.app.dark .question-button:hover {
+  background: #374151;
+}
 .app.dark .document-card {
   background: #1f2937;
   border-color: #374151;
@@ -25,11 +37,30 @@ body {
 .app.dark .insight-item,
 .app.dark .warning-item,
 .app.dark .stat-card {
+  background: #1f2937;
   border-color: #374151;
 }
 .app.dark .document-type-badge {
   background: #283646;
   border-color: #2e3744;
+}
+.app.dark .ai-analysis {
+  border-top-color: #374151;
+}
+.app.dark .xml-viewer {
+  background: #111827;
+  border: 1px solid #374151;
+  color: #d1d5db;
+}
+.app.dark .entity-card span {
+  color: #9ca3af;
+}
+.app.dark h1,
+.app.dark h2,
+.app.dark h3,
+.app.dark h4,
+.app.dark p {
+  color: #e5e7eb;
 }
 .theme-toggle {
   display: block;
