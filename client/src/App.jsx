@@ -3,7 +3,48 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [documents, setDocuments] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [xmlContent, setXmlContent] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+
+  function handleFileChange(event) {
+    const file = event.target.files[0];
+
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setXmlContent(reader.result);
+    };
+    reader.readAsText(file);
+  }
+
+  async function handleAnalyze() {
+    setIsAnalyzing(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/xml/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/xml",
+        },
+        body: xmlContent,
+      });
+
+      const data = await response.json();
+
+      setDocuments((currentDocuments) => [data, ...currentDocuments]);
+
+      console.log(data);
+    } catch (error) {
+      console.error("Analysis failed:", error);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }
 
   useEffect(() => {
     fetch("http://localhost:5000/api/xml/documents")
@@ -19,6 +60,15 @@ function App() {
       <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
         {darkMode ? "Light Mode" : "Dark Mode"}
       </button>
+
+      <div className="xml-upload">
+        <h2>Upload XML Document</h2>
+        <input type="file" accept=".xml" onChange={handleFileChange}></input>
+        {xmlContent && <pre className="xml-preview">{xmlContent}</pre>}
+        <button onClick={handleAnalyze} disabled={isAnalyzing}>
+          {isAnalyzing ? "Analyzing..." : "Analyze XML"}
+        </button>
+      </div>
       <h1>XML Documents</h1>
 
       <div className="documents-container">
