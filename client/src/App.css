@@ -117,6 +117,23 @@ body:has(.app.dark) {
   font-size: 24px;
 }
 
+.parsed-data-viewer {
+  margin: 0 0 28px;
+  padding: 20px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre;
+}
+.app.dark .parsed-data-viewer {
+  background: #111827;
+  border: 1px solid #374151;
+  color: #d1d5db;
+}
+
 .document-type-badge {
   display: inline-block;
   padding: 8px 12px;

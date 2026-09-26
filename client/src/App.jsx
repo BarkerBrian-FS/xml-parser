@@ -88,6 +88,10 @@ function App() {
           <div className="document-card" key={doc._id}>
             <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
             <pre className="xml-viewer">{doc.originalXml}</pre>
+            <h3>Parsed Data</h3>
+            <pre className="parsed-data-viewer">
+              {JSON.stringify(doc.data, null, 2)}
+            </pre>
             <div className="ai-analysis">
               <h3>AI Analysis</h3>
               <div className="overview-grid">
