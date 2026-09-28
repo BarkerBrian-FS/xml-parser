@@ -4,6 +4,36 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
+async function askAboutDocument(data, metadata, aiAnalysis, question) {
+  const prompt = `
+Answer the user's question using only the provided document data and analysis.
+
+Do not invent information or make assumptions.
+If the answer cannot be determined from the provided information, clearly say so.
+
+User question:
+${question}
+
+Document data:
+${JSON.stringify(data, null, 2)}
+
+Metadata:
+${JSON.stringify(metadata, null, 2)}
+
+Existing AI analysis:
+${JSON.stringify(aiAnalysis, null, 2)}
+`;
+
+  const MODEL = "gemini-3.5-flash-lite";
+
+  const response = await generateWithRetry({
+    model: MODEL,
+    contents: prompt,
+  });
+
+  return response.text;
+}
+
 async function generateWithRetry(request, attempts = 3) {
   for (let attempt = 1; attempt <= attempts; attempt++) {
     try {
@@ -160,4 +190,4 @@ const responseSchema = {
   ],
 };
 
-module.exports = { ai, responseSchema, analyzeDocument };
+module.exports = { ai, responseSchema, analyzeDocument, askAboutDocument };

@@ -8,6 +8,8 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -55,6 +57,22 @@ function App() {
     }
   }
 
+  async function handleAsk(documentId) {
+    const response = await fetch("http://localhost:5000/api/xml/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        documentId: documentId,
+        question: question,
+      }),
+    });
+    const data = await response.json();
+
+    setAnswer(data.answer);
+  }
+
   useEffect(() => {
     fetch("http://localhost:5000/api/xml/documents")
       .then((response) => response.json())
@@ -88,10 +106,6 @@ function App() {
           <div className="document-card" key={doc._id}>
             <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
             <pre className="xml-viewer">{doc.originalXml}</pre>
-            <h3>Parsed Data</h3>
-            <pre className="parsed-data-viewer">
-              {JSON.stringify(doc.data, null, 2)}
-            </pre>
             <div className="ai-analysis">
               <h3>AI Analysis</h3>
               <div className="overview-grid">
@@ -163,6 +177,27 @@ function App() {
                   </div>
                 </>
               )}
+              <div className="ask-section">
+                <h3>Ask About This Data</h3>
+                <input
+                  type="text"
+                  value={question}
+                  onChange={(event) => setQuestion(event.target.value)}
+                  placeholder="Ask a question about the document"
+                ></input>
+                <button
+                  className="ask-button"
+                  onClick={() => handleAsk(doc._id)}
+                >
+                  Ask
+                </button>
+                {answer && (
+                  <div className="ai-answer">
+                    <h4>AI Answer</h4>
+                    <p>{answer}</p>
+                  </div>
+                )}
+              </div>
               {doc.aiAnalysis?.suggestedQuestions?.length > 0 && (
                 <>
                   <h4>Suggested Questions</h4>
