@@ -62,6 +62,30 @@ body:has(.app.dark) {
 .app.dark p {
   color: #e5e7eb;
 }
+
+.app.dark .ask-section {
+  background: #1f2937;
+  border-color: #374151;
+}
+.app.dark .ask-section input {
+  background: #111827;
+  background-color: #4b5563;
+  color: #f9fafb;
+}
+.app.dark .ask-section input::placeholder {
+  color: #9ca3af;
+}
+.app.dark .ask-section input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.15);
+}
+.app.dark .ask-button {
+  background: #f3f4f6;
+  color: #111827;
+}
+.app.dark .ask-button:hover {
+  background: #e5e7eb;
+}
 .theme-toggle {
   display: block;
   margin-left: auto;
