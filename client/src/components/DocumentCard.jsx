@@ -3,21 +3,36 @@ import { useState } from "react";
 const DocumentCard = ({ doc }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [isAsking, setIsAsking] = useState(false);
+  const [askError, setAskError] = useState("");
 
   async function handleAsk(documentId, questionText = question) {
-    const response = await fetch("http://localhost:5000/api/xml/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        documentId: documentId,
-        question: questionText,
-      }),
-    });
-    const data = await response.json();
+    setIsAsking(true);
+    setAskError("");
 
-    setAnswer(data.answer);
+    try {
+      const response = await fetch("http://localhost:5000/api/xml/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          documentId: documentId,
+          question: questionText,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to get an answer.");
+      }
+
+      setAnswer(data.answer);
+    } catch (error) {
+      setAskError(error.message);
+    } finally {
+      setIsAsking(false);
+    }
   }
 
   return (
@@ -103,8 +118,12 @@ const DocumentCard = ({ doc }) => {
               onChange={(event) => setQuestion(event.target.value)}
               placeholder="Ask a question about the document"
             ></input>
-            <button className="ask-button" onClick={() => handleAsk(doc._id)}>
-              Ask
+            <button
+              className="ask-button"
+              onClick={() => handleAsk(doc._id)}
+              disabled={isAsking}
+            >
+              {isAsking ? "Asking..." : "Ask"}
             </button>
             {answer && (
               <div className="ai-answer">
