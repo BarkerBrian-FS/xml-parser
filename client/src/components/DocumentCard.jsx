@@ -125,6 +125,7 @@ const DocumentCard = ({ doc }) => {
             >
               {isAsking ? "Asking..." : "Ask"}
             </button>
+            {askError && <p className="error-message">{askError}</p>}
             {answer && (
               <div className="ai-answer">
                 <h4>AI Answer</h4>
