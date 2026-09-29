@@ -112,7 +112,11 @@ function App() {
       {xmlContent && <pre className="xml-preview">{xmlContent}</pre>}
 
       {error && <p className="error-message">{error}</p>}
-      <button onClick={handleAnalyze} disabled={isAnalyzing}>
+      <button
+        className="analyze-button"
+        onClick={handleAnalyze}
+        disabled={isAnalyzing}
+      >
         {isAnalyzing ? "Analyzing..." : "Analyze XML"}
       </button>
       <h1>XML Documents</h1>
