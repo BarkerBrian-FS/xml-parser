@@ -8,6 +8,7 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -21,6 +22,30 @@ function App() {
       setXmlContent(reader.result);
     };
     reader.readAsText(file);
+  }
+  function handleDragOver(event) {
+    event.preventDefault();
+    setIsDragging(false);
+  }
+  function handleDragLeave(event) {
+    event.preventDefault();
+    setIsDragging(false);
+  }
+  function handleDrop(event) {
+    event.preventDefault();
+    setIsDragging(false);
+
+    const file = event.dataTransfer.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    handleFileChange({
+      target: {
+        files: [file],
+      },
+    });
   }
 
   async function handleAnalyze() {
@@ -70,9 +95,19 @@ function App() {
         {darkMode ? "Light Mode" : "Dark Mode"}
       </button>
 
-      <div className="xml-upload">
-        <h2>Upload XML Document</h2>
-        <input type="file" accept=".xml" onChange={handleFileChange}></input>
+      <div
+        className={`xml-upload ${isDragging ? "dragging" : ""}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <h2>Upload Your XML Document</h2>
+        <p className="upload-instructions">Drag and Drop your XML file here</p>
+        <p className="upload-or">or</p>
+        <label className="browse-button">
+          Browse Files
+          <input type="file" accept=".xml" onChange={handleFileChange} />
+        </label>
         {xmlContent && <pre className="xml-preview">{xmlContent}</pre>}
 
         {error && <p className="error-message">{error}</p>}

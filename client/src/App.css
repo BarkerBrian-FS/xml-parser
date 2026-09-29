@@ -16,6 +16,7 @@ body:has(.app.dark) {
   padding: 40px 24px;
 }
 
+/* Dark Mode*/
 .app.dark {
   background: #0b0f19;
   color: #e5e7eb;
@@ -109,6 +110,71 @@ body:has(.app.dark) {
   font-size: 32px;
 }
 
+/* Drag And Drop */
+.xml-upload {
+  padding: 40px;
+  margin-bottom: 10px;
+  border: 2px dashed #d1d5db;
+  border-radius: 14px;
+  background: white;
+  text-align: center;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.xml-upload h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.xml-upload.dragging {
+  border-color: #6b7280;
+  background: #f3f4f6;
+}
+
+.xml-upload > button {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+.xml-upload > button:hover {
+  background: #374151;
+}
+.xml-upload > button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* Upload File Area */
+.browse-button {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.browse-button:hover {
+  background: #374151;
+}
+.browse-button input {
+  display: none;
+}
+/* Analyze Xml */
+
+/* Beginning of XML area*/
 .xml-viewer {
   padding: 20px;
   margin: 0 0 28px;
@@ -166,6 +232,8 @@ body:has(.app.dark) {
   font-size: 14px;
   font-weight: 600;
 }
+
+/* Ask About Data */
 .ask-section {
   margin-top: 32px;
   padding: 24px;
@@ -221,6 +289,8 @@ body:has(.app.dark) {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* AI Analysis Area */
 .ai-analysis {
   margin-top: 24px;
   padding-top: 24px;
@@ -350,6 +420,7 @@ body:has(.app.dark) {
   font-size: 14px;
 }
 
+/* Suggested Questions Area*/
 .questions-list {
   display: flex;
   flex-wrap: wrap;
