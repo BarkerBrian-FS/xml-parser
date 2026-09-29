@@ -1,15 +1,13 @@
 import "./App.css";
+import DocumentCard from "./components/DocumentCard";
 import { useEffect, useState } from "react";
 
 function App() {
   const [documents, setDocuments] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
   const [xmlContent, setXmlContent] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState("");
   const [darkMode, setDarkMode] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -57,22 +55,6 @@ function App() {
     }
   }
 
-  async function handleAsk(documentId) {
-    const response = await fetch("http://localhost:5000/api/xml/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        documentId: documentId,
-        question: question,
-      }),
-    });
-    const data = await response.json();
-
-    setAnswer(data.answer);
-  }
-
   useEffect(() => {
     fetch("http://localhost:5000/api/xml/documents")
       .then((response) => response.json())
@@ -103,117 +85,7 @@ function App() {
 
       <div className="documents-container">
         {documents.map((doc) => (
-          <div className="document-card" key={doc._id}>
-            <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
-            <pre className="xml-viewer">{doc.originalXml}</pre>
-            <div className="ai-analysis">
-              <h3>AI Analysis</h3>
-              <div className="overview-grid">
-                <div className="overview-card">
-                  <h4>Summary</h4>
-                  <p>{doc.aiAnalysis?.summary || "No summary provided."}</p>
-                </div>
-                <div className="overview-card">
-                  <h4>Document Type</h4>
-                  <span className="document-type-badge">
-                    {doc.aiAnalysis?.documentType ||
-                      "No document type provided"}
-                  </span>
-                </div>
-              </div>
-              {doc.aiAnalysis?.entities?.length > 0 && (
-                <>
-                  <h4>Entities</h4>
-                  <div className="entities-grid">
-                    {doc.aiAnalysis?.entities?.map((entity) => (
-                      <div className="entity-card" key={entity.name}>
-                        <strong>{entity.name}</strong>
-                        <span>{entity.type}</span>
-                        {entity.description && <p>{entity.description}</p>}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-              {doc.aiAnalysis?.insights?.length > 0 && (
-                <>
-                  <h4>Insights</h4>
-                  <div className="insight-list">
-                    {doc.aiAnalysis?.insights?.map((insight, index) => (
-                      <div className="insight-item" key={index}>
-                        <p>{insight}</p>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-              {doc.aiAnalysis?.warnings?.length > 0 && (
-                <>
-                  <h4>Warnings</h4>
-                  <div className="warning-list">
-                    {doc.aiAnalysis?.warnings?.map((warning, index) => (
-                      <div className="warnings-item" key={index}>
-                        <p> {warning}</p>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-              {doc.aiAnalysis?.statistics?.length > 0 && (
-                <>
-                  <h4>Statistics</h4>
-                  <div className="statistics-grid">
-                    {doc.aiAnalysis?.statistics?.map((statistic, index) => (
-                      <div className="stat-card" key={index}>
-                        <h4 className="stat-name">{statistic.name}</h4>
-                        <p className="stat-value">{statistic.value}</p>
-                        {statistic.description && (
-                          <p className="stat-description">
-                            {statistic.description}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-              <div className="ask-section">
-                <h3>Ask About This Data</h3>
-                <input
-                  type="text"
-                  value={question}
-                  onChange={(event) => setQuestion(event.target.value)}
-                  placeholder="Ask a question about the document"
-                ></input>
-                <button
-                  className="ask-button"
-                  onClick={() => handleAsk(doc._id)}
-                >
-                  Ask
-                </button>
-                {answer && (
-                  <div className="ai-answer">
-                    <h4>AI Answer</h4>
-                    <p>{answer}</p>
-                  </div>
-                )}
-              </div>
-              {doc.aiAnalysis?.suggestedQuestions?.length > 0 && (
-                <>
-                  <h4>Suggested Questions</h4>
-                  <div className="questions-list">
-                    {doc.aiAnalysis?.suggestedQuestions?.map(
-                      (question, index) => (
-                        <button className="question-button" key={index}>
-                          {question}
-                        </button>
-                      ),
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+          <DocumentCard key={doc._id} doc={doc} />
         ))}
       </div>
     </main>
