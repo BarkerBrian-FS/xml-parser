@@ -108,14 +108,13 @@ function App() {
           Browse Files
           <input type="file" accept=".xml" onChange={handleFileChange} />
         </label>
-        {xmlContent && <pre className="xml-preview">{xmlContent}</pre>}
-
-        {error && <p className="error-message">{error}</p>}
-
-        <button onClick={handleAnalyze} disabled={isAnalyzing}>
-          {isAnalyzing ? "Analyzing..." : "Analyze XML"}
-        </button>
       </div>
+      {xmlContent && <pre className="xml-preview">{xmlContent}</pre>}
+
+      {error && <p className="error-message">{error}</p>}
+      <button onClick={handleAnalyze} disabled={isAnalyzing}>
+        {isAnalyzing ? "Analyzing..." : "Analyze XML"}
+      </button>
       <h1>XML Documents</h1>
 
       <div className="documents-container">

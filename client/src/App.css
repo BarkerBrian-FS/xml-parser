@@ -131,29 +131,6 @@ body:has(.app.dark) {
   background: #f3f4f6;
 }
 
-.xml-upload > button {
-  display: block;
-  width: 100%;
-  margin-top: 24px;
-  padding: 14px 20px;
-  border: none;
-  border-radius: 8px;
-  background: #1f2937;
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    opacity 0.2s ease;
-}
-.xml-upload > button:hover {
-  background: #374151;
-}
-.xml-upload > button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
 /* Upload File Area */
 .browse-button {
   display: inline-block;
@@ -186,6 +163,23 @@ body:has(.app.dark) {
   font-size: 14px;
   line-height: 1.6;
   white-space: pre;
+}
+
+/* XML Preview */
+.xml-preview {
+  margin: 20px 0 0;
+  padding: 20px;
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+  color: #374151;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 .documents-container {
