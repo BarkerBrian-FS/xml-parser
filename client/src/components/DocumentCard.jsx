@@ -118,7 +118,11 @@ const DocumentCard = ({ doc }) => {
               <h4>Suggested Questions</h4>
               <div className="questions-list">
                 {doc.aiAnalysis?.suggestedQuestions?.map((question, index) => (
-                  <button className="question-button" key={index}>
+                  <button
+                    className="question-button"
+                    key={index}
+                    onClick={() => handleAsk(doc._id, question)}
+                  >
                     {question}
                   </button>
                 ))}
