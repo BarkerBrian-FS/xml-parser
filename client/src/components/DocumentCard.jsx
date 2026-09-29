@@ -9,6 +9,7 @@ const DocumentCard = ({ doc }) => {
   async function handleAsk(documentId, questionText = question) {
     setIsAsking(true);
     setAskError("");
+    setAnswer("");
 
     try {
       const response = await fetch("http://localhost:5000/api/xml/ask", {
@@ -112,19 +113,21 @@ const DocumentCard = ({ doc }) => {
           )}
           <div className="ask-section">
             <h3>Ask About This Data</h3>
-            <input
-              type="text"
-              value={question}
-              onChange={(event) => setQuestion(event.target.value)}
-              placeholder="Ask a question about the document"
-            ></input>
-            <button
-              className="ask-button"
-              onClick={() => handleAsk(doc._id)}
-              disabled={isAsking}
-            >
-              {isAsking ? "Asking..." : "Ask"}
-            </button>
+            <div className="ask-controls">
+              <input
+                type="text"
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+                placeholder="Ask a question about the document"
+              ></input>
+              <button
+                className="ask-button"
+                onClick={() => handleAsk(doc._id)}
+                disabled={isAsking}
+              >
+                {isAsking ? "Asking..." : "Ask"}
+              </button>
+            </div>
             {askError && <p className="error-message">{askError}</p>}
             {answer && (
               <div className="ai-answer">

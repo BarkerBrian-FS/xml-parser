@@ -142,7 +142,61 @@ body:has(.app.dark) {
   font-size: 14px;
   font-weight: 600;
 }
+.ask-section {
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
 
+.ask-section input {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  margin: 0;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background: white;
+  color: #384961;
+  outline: none;
+}
+.ask-section input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.15);
+}
+
+.ask-controls {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.ask-controls {
+  flex: 1;
+}
+
+.ask-button {
+  flex-shrink: 0;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+.ask-button:hover {
+  background: #374151;
+}
+.ask-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .ai-analysis {
   margin-top: 24px;
   padding-top: 24px;
