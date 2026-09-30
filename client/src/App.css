@@ -127,6 +127,10 @@ body:has(.app.dark) {
   background: #e5e7eb;
 }
 
+.app.dark .entities-grid {
+  border: 1px solid #374151;
+}
+
 /* Dark Theme Button */
 .theme-toggle {
   display: block;
@@ -199,7 +203,7 @@ body:has(.app.dark) {
   padding: 14px 20px;
   border: none;
   border-radius: 8px;
-  background: #1f2937;
+  background: #374151;
   color: white;
   font-size: 15px;
   font-weight: 600;
@@ -254,6 +258,7 @@ body:has(.app.dark) {
 }
 
 .document-card {
+  margin-top: 10px;
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
@@ -394,10 +399,10 @@ body:has(.app.dark) {
 /* Entity Area */
 .entities-grid {
   display: grid;
-  flex-direction: column;
-  gap: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
   padding: 16px;
-  border: 1px solid #dfdfdf;
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
 }
 

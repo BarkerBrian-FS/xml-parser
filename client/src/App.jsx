@@ -14,10 +14,14 @@ function App() {
   function handleFileChange(event) {
     const file = event.target.files[0];
 
+    if (!file) {
+      return;
+    }
     if (!file.name.toLowerCase().endsWith(".xml")) {
       setError("Please select and XML file.");
       return;
     }
+    setError("");
     setFileName(file.name);
     const reader = new FileReader();
 
