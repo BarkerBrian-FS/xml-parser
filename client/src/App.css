@@ -1,3 +1,4 @@
+/* General Body Styles*/
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -9,6 +10,7 @@ body:has(.app.dark) {
   background: #0b0f19;
 }
 
+/* General App */
 .app {
   min-height: 100vh;
   max-width: 1200px;
@@ -87,6 +89,17 @@ body:has(.app.dark) {
 .app.dark .ask-button:hover {
   background: #e5e7eb;
 }
+
+.app.dark .xml-upload h2 {
+  color: #1f2937;
+}
+.app.dark .xml-upload p {
+  color: #1f2937;
+}
+.app.dark .analyze-button {
+}
+
+/* Dark Theme Button */
 .theme-toggle {
   display: block;
   margin-left: auto;
@@ -149,8 +162,30 @@ body:has(.app.dark) {
 .browse-button input {
   display: none;
 }
-/* Analyze Xml */
-
+/* Analyze Xml Button */
+.analyze-button {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+.analyze-button:hover {
+  background: #374151;
+}
+.analyze-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 /* Beginning of XML area*/
 .xml-viewer {
   padding: 20px;
@@ -182,6 +217,7 @@ body:has(.app.dark) {
   overflow-wrap: break-word;
 }
 
+/* Document Cards */
 .documents-container {
   display: flex;
   flex-direction: column;
@@ -201,6 +237,7 @@ body:has(.app.dark) {
   font-size: 24px;
 }
 
+/* Parsed Data */
 .parsed-data-viewer {
   margin: 0 0 28px;
   padding: 20px;
@@ -302,6 +339,7 @@ body:has(.app.dark) {
   font-size: 16px;
 }
 
+/* AI Overview */
 .overview-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -324,6 +362,7 @@ body:has(.app.dark) {
   line-height: 1.6;
 }
 
+/* Entity Area */
 .entities-grid {
   display: grid;
   flex-direction: column;
@@ -354,6 +393,7 @@ body:has(.app.dark) {
   line-height: 1.5;
 }
 
+/* Insights Area */
 .insight-list {
   display: flex;
   flex-direction: column;
@@ -370,6 +410,7 @@ body:has(.app.dark) {
   line-height: 1.5;
 }
 
+/* Warning Area*/
 .warning-list {
   display: flex;
   flex-direction: column;
@@ -386,6 +427,7 @@ body:has(.app.dark) {
   line-height: 1.5;
 }
 
+/* Statistics Section*/
 .statistics-grid {
   display: grid;
   grid-template-columns: reapeat(4, 1fr);
