@@ -96,6 +96,11 @@ function App() {
       });
   }, []);
 
+  function handleDeleteDocument(documentId) {
+    setDocuments((currentDocuments) =>
+      currentDocuments.filter((document) => document._id !== documentId),
+    );
+  }
   return (
     <main className={`app ${darkMode ? "dark" : ""}`}>
       <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
@@ -131,7 +136,11 @@ function App() {
 
       <div className="documents-container">
         {documents.map((doc) => (
-          <DocumentCard key={doc._id} doc={doc} />
+          <DocumentCard
+            key={doc._id}
+            doc={doc}
+            onDelete={handleDeleteDocument}
+          />
         ))}
       </div>
     </main>

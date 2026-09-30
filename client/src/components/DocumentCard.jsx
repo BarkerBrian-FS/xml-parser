@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const DocumentCard = ({ doc }) => {
+const DocumentCard = ({ doc, onDelete }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [isAsking, setIsAsking] = useState(false);
@@ -36,6 +36,27 @@ const DocumentCard = ({ doc }) => {
     }
   }
 
+  async function handleDelete(documentId) {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/xml/documents/${documentId}`,
+        {
+          method: "DELETE",
+        },
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to delete the document");
+      }
+      console.log("Deleting document from UI:", documentId);
+      onDelete(documentId);
+      console.log(data.message);
+    } catch (error) {
+      console.error("Delete failed", error);
+    }
+  }
+
   return (
     <div>
       <div className="document-card">
@@ -43,7 +64,12 @@ const DocumentCard = ({ doc }) => {
           <div>
             <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
           </div>
-          <button className="delete-button">Delete</button>
+          <button
+            className="delete-button"
+            onClick={() => handleDelete(doc._id)}
+          >
+            Delete
+          </button>
         </div>
         <pre className="xml-viewer">{doc.originalXml}</pre>
         <div className="ai-analysis">
