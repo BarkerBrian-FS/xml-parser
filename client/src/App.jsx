@@ -119,7 +119,7 @@ function App() {
       >
         {isAnalyzing ? "Analyzing..." : "Analyze XML"}
       </button>
-      <h1>XML Documents</h1>
+      <h1 className="xml-title">XML Documents</h1>
 
       <div className="documents-container">
         {documents.map((doc) => (

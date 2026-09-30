@@ -89,14 +89,33 @@ body:has(.app.dark) {
 .app.dark .ask-button:hover {
   background: #e5e7eb;
 }
-
-.app.dark .xml-upload h2 {
-  color: #1f2937;
+.app.dark .xml-upload {
+  background: #1f2937;
+  border-color: #4b5563;
 }
-.app.dark .xml-upload p {
-  color: #1f2937;
+
+.app.dark .xml-upload.dragging {
+  background: #374151;
+  border-color: #9ca3af;
+}
+.app.dark .xml-preview {
+  background: #111827;
+  border-color: #374151;
+  color: #e5e7eb;
+}
+.app.dark .browse-button {
+  background: #f3f4f6;
+  color: #111827;
+}
+.app.dark .browse-button:hover {
+  background: #e5e7eb;
 }
 .app.dark .analyze-button {
+  color: #111827;
+  background: #f3f4f6;
+}
+.app.dark .analyze-button:hover {
+  background: #e5e7eb;
 }
 
 /* Dark Theme Button */
@@ -167,6 +186,7 @@ body:has(.app.dark) {
   display: block;
   width: 100%;
   margin-top: 20px;
+  margin-bottom: 20px;
   padding: 14px 20px;
   border: none;
   border-radius: 8px;
