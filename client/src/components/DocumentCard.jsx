@@ -39,7 +39,12 @@ const DocumentCard = ({ doc }) => {
   return (
     <div>
       <div className="document-card">
-        <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
+        <div>
+          <div>
+            <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
+          </div>
+          <button className="delete-button">Delete</button>
+        </div>
         <pre className="xml-viewer">{doc.originalXml}</pre>
         <div className="ai-analysis">
           <h3>AI Analysis</h3>

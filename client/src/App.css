@@ -131,6 +131,15 @@ body:has(.app.dark) {
   border: 1px solid #374151;
 }
 
+.app.dark .delete-button {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+.app.dark .delete-button:hover {
+  background: #4b5563;
+}
+
 /* Dark Theme Button */
 .theme-toggle {
   display: block;
@@ -231,6 +240,20 @@ body:has(.app.dark) {
   font-size: 14px;
   line-height: 1.6;
   white-space: pre;
+}
+.delete-button {
+  padding: 8px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.delete-button:hover {
+  background: #f3f4f6;
 }
 
 /* XML Preview */

@@ -17,6 +17,7 @@ app.use(express.text({ type: "application/xml" }));
 const PORT = 5000;
 connectDB(process.env.MONGO_URI);
 
+/* GET Routes */
 app.get("/api/health", (req, res) => {
   res.json({
     message: "API is running",
@@ -36,6 +37,7 @@ app.get("/api/xml/documents", async (req, res) => {
   }
 });
 
+/* POST Routes */
 app.post("/api/xml/ask", async (req, res) => {
   console.log("Hit ask route");
   try {
@@ -96,6 +98,28 @@ app.post("/api/xml/analyze", async (req, res) => {
 
     res.status(500).json({
       message: "Failed to save document",
+    });
+  }
+});
+/* DELETE Routes */
+app.delete("/api/xml/documents/:id", async (req, res) => {
+  console.log("Hit delete route");
+  try {
+    const document = await Document.findByIdAndDelete(req.params.id);
+
+    if (!document) {
+      return res.status(404).json({
+        message: "Document not found",
+      });
+    }
+    res.json({
+      message: "Document deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to delete document",
     });
   }
 });
