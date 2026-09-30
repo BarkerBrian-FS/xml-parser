@@ -14,7 +14,8 @@ function App() {
   function handleFileChange(event) {
     const file = event.target.files[0];
 
-    if (!file) {
+    if (!file.name.toLowerCase().endsWith(".xml")) {
+      setError("Please select and XML file.");
       return;
     }
     setFileName(file.name);
@@ -118,7 +119,7 @@ function App() {
       <button
         className="analyze-button"
         onClick={handleAnalyze}
-        disabled={isAnalyzing}
+        disabled={isAnalyzing || !xmlContent}
       >
         {isAnalyzing ? "Analyzing..." : "Analyze XML"}
       </button>
