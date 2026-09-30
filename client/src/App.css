@@ -107,8 +107,17 @@ body:has(.app.dark) {
   background: #f3f4f6;
   color: #111827;
 }
+.app.dark .selected-file {
+  color: #e5e7eb;
+}
 .app.dark .browse-button:hover {
   background: #e5e7eb;
+}
+.selected-file {
+  margin: 16px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
 }
 .app.dark .analyze-button {
   color: #111827;

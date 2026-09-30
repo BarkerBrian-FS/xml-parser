@@ -9,6 +9,7 @@ function App() {
   const [error, setError] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [fileName, setFileName] = useState("");
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -16,6 +17,7 @@ function App() {
     if (!file) {
       return;
     }
+    setFileName(file.name);
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -108,6 +110,7 @@ function App() {
           Browse Files
           <input type="file" accept=".xml" onChange={handleFileChange} />
         </label>
+        {fileName && <p className="selected-file">✓{fileName}</p>}
       </div>
       {xmlContent && <pre className="xml-preview">{xmlContent}</pre>}
 
