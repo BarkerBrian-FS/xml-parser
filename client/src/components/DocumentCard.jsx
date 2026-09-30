@@ -57,6 +57,12 @@ const DocumentCard = ({ doc, onDelete }) => {
     }
   }
 
+  function formatStatName(name) {
+    return name
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (letter) => letter.toUpperCase());
+  }
+
   return (
     <div>
       <div className="document-card">
@@ -130,8 +136,13 @@ const DocumentCard = ({ doc, onDelete }) => {
               <div className="statistics-grid">
                 {doc.aiAnalysis?.statistics?.map((statistic, index) => (
                   <div className="stat-card" key={index}>
-                    <h4 className="stat-name">{statistic.name}</h4>
-                    <p className="stat-value">{statistic.value}</p>
+                    <h5 className="stat-name">
+                      {formatStatName(statistic.name)}
+                    </h5>
+                    <div className="stat-value">
+                      {statistic.value}
+                      {statistic.unit && <span>{statistic.unit}</span>}
+                    </div>
                     {statistic.description && (
                       <p className="stat-description">
                         {statistic.description}

@@ -139,6 +139,19 @@ body:has(.app.dark) {
 .app.dark .delete-button:hover {
   background: #4b5563;
 }
+.app.dark .stat-card {
+  background: #111827;
+  border-color: #374151;
+}
+.app.dark .stat-name .app.dark .stat-description {
+  color: #9ca3af;
+}
+.app.dark .stat-value {
+  color: #9ca3af;
+}
+.app.dark .stat-value span {
+  color: #9ca3af;
+}
 
 /* Dark Theme Button */
 .theme-toggle {
@@ -487,8 +500,8 @@ body:has(.app.dark) {
 /* Statistics Section*/
 .statistics-grid {
   display: grid;
-  grid-template-columns: reapeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
   margin-bottom: 24px;
 }
 
@@ -501,16 +514,29 @@ body:has(.app.dark) {
 .stat-name {
   margin: 0 0 10px;
   font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
 }
 .stat-value {
-  margin: 0;
+  margin-bottom: 8px;
   font-size: 26px;
-  font-weight: bold;
+  font-weight: 700;
+  color: #1f2937;
+}
+.stat-value span {
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
 }
 
 .stat-description {
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
 }
 
 /* Suggested Questions Area*/
