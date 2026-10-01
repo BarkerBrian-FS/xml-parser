@@ -170,6 +170,37 @@ body:has(.app.dark) {
   color: #9ca3af;
 }
 
+.app.dark .documents-status {
+  background: #1f2937;
+  border-color: #374151;
+  color: #9ca3af;
+}
+.app.dark .documents-error {
+  background: #374151;
+  border-color: #4b5563;
+  color: #e5e7eb;
+}
+
+/* Documents Status Loading/None Found */
+.documents-status {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #f9fafb;
+  color: #6b7280;
+  text-align: center;
+}
+.documents-error {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #374151;
+  text-align: center;
+}
+
 /* Dark Theme Button */
 .theme-toggle {
   display: block;

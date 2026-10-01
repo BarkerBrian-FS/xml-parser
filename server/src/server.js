@@ -76,6 +76,16 @@ app.post("/api/xml/analyze", async (req, res) => {
     if (result.valid === false) {
       return res.status(400).json(result);
     }
+
+    const existingDocument = await Document.findOne({
+      originalXml: req.body,
+    });
+    if (existingDocument) {
+      return res.status(409).json({
+        message: "This XML document has already been analyzed",
+      });
+    }
+
     const analysis = await analyzeDocument(result.data, result.metadata);
     console.log("POST route reached");
     console.log(typeof req.body);
@@ -101,6 +111,7 @@ app.post("/api/xml/analyze", async (req, res) => {
     });
   }
 });
+
 /* PATCH Routes */
 app.patch("/api/xml/documents/:id", async (req, res) => {
   try {

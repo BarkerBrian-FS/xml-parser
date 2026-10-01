@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [documents, setDocuments] = useState([]);
+  const [isLoadingDocuments, setIsLoadingDocuments] = useState(true);
+  const [documentsError, setDocumentsError] = useState("");
   const [xmlContent, setXmlContent] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState("");
@@ -77,7 +79,8 @@ function App() {
       }
 
       setDocuments((currentDocuments) => [data, ...currentDocuments]);
-
+      setXmlContent("");
+      setFileName("");
       console.log(data);
     } catch (error) {
       console.error("Analysis failed:", error);
@@ -89,10 +92,22 @@ function App() {
 
   useEffect(() => {
     fetch("http://localhost:5000/api/xml/documents")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load documents");
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
         setDocuments(data);
+      })
+      .catch((error) => {
+        console.error("Failed to load documents", error);
+        setDocumentsError("Unable to connect to server.");
+      })
+      .finally(() => {
+        setIsLoadingDocuments(false);
       });
   }, []);
 
@@ -134,6 +149,13 @@ function App() {
       </button>
       <h1 className="xml-title">XML Documents</h1>
 
+      {isLoadingDocuments && (
+        <p className="documents-status">Loading Documents..</p>
+      )}
+      {documentsError && <p className="documents-error">{documentsError}</p>}
+      {!isLoadingDocuments && !documentsError && documents.length === 0 && (
+        <p className="documents-status">No documents yet</p>
+      )}
       <div className="documents-container">
         {documents.map((doc) => (
           <DocumentCard
