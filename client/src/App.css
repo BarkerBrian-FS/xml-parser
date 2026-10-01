@@ -130,6 +130,14 @@ body:has(.app.dark) {
 .app.dark .entities-grid {
   border: 1px solid #374151;
 }
+.app.dark .title-input {
+  background: #111827;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+.app.dark .title-input:focus {
+  border-color: #9ca3af;
+}
 
 .app.dark .edit-button {
   background: #f3f4f6;
@@ -263,11 +271,34 @@ body:has(.app.dark) {
   line-height: 1.6;
   white-space: pre;
 }
+/* Title Input and Edit */
+.title-input {
+  width: 40%;
+  max-width: 300px;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #1f2937;
+  font-size: 24px;
+  font-weight: 600;
+  outline: none;
+}
+.title-input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.15);
+}
+.title-input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.15);
+}
 .document-buttons {
   display: flex;
   gap: 8px;
   align-items: center;
   margin-bottom: 8px;
+  margin: 8px;
 }
 .edit-button {
   padding: 8px 14px;

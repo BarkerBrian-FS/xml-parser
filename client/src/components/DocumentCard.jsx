@@ -97,6 +97,7 @@ const DocumentCard = ({ doc, onDelete }) => {
           <div>
             {isEditingTitle ? (
               <input
+                className="title-input"
                 type="text"
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
