@@ -101,6 +101,39 @@ app.post("/api/xml/analyze", async (req, res) => {
     });
   }
 });
+/* PATCH Routes */
+app.patch("/api/xml/documents/:id", async (req, res) => {
+  try {
+    const { title } = req.body;
+
+    if (typeof title !== "string") {
+      return res.status(400).json({
+        message: "Title must be a string",
+      });
+    }
+
+    const document = await Document.findByIdAndUpdate(
+      req.params.id,
+      { title: title.trim() },
+      { new: true, runValidators: true },
+    );
+
+    if (!document) {
+      return res.status(404).json({
+        message: "Document not found",
+      });
+    }
+
+    res.json(document);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to update document",
+    });
+  }
+});
+
 /* DELETE Routes */
 app.delete("/api/xml/documents/:id", async (req, res) => {
   console.log("Hit delete route");
