@@ -7,6 +7,7 @@ const express = require("express");
 const cors = require("cors");
 const { analyzeXML } = require("./services/xmlService");
 const connectDB = require("./config/db");
+const mongoose = require("mongoose");
 const Document = require("./models/Documents.js");
 
 const app = express();
@@ -33,6 +34,30 @@ app.get("/api/xml/documents", async (req, res) => {
     console.error(error);
     res.status(500).json({
       message: "Failed to retrieve documents",
+    });
+  }
+});
+
+app.get("/api/xml/documents/:id", async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid document Id",
+      });
+    }
+
+    const document = await Document.findById(req.params.id);
+
+    if (!document) {
+      res.status(404).json({
+        message: "Document not found",
+      });
+    }
+    res.json(document);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to retrieve document",
     });
   }
 });
