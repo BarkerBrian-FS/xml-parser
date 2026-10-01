@@ -5,6 +5,8 @@ const DocumentCard = ({ doc, onDelete }) => {
   const [answer, setAnswer] = useState("");
   const [isAsking, setIsAsking] = useState(false);
   const [askError, setAskError] = useState("");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [title, setTitle] = useState(doc.title || "");
 
   async function handleAsk(documentId, questionText = question) {
     setIsAsking(true);
@@ -57,6 +59,31 @@ const DocumentCard = ({ doc, onDelete }) => {
     }
   }
 
+  async function handleUpdateTitle() {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/xml/documents/${doc._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: title,
+          }),
+        },
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update title.");
+      }
+      setTitle(data.title);
+      setIsEditingTitle(false);
+    } catch (error) {
+      console.error("Title update failed:", error);
+    }
+  }
+
   function formatStatName(name) {
     return name
       .replace(/([A-Z])/g, " $1")
@@ -68,14 +95,49 @@ const DocumentCard = ({ doc, onDelete }) => {
       <div className="document-card">
         <div>
           <div>
-            <h2>Document: {doc.metadata?.rootElement || "Unknown"}</h2>
+            {isEditingTitle ? (
+              <input
+                type="text"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+              ></input>
+            ) : (
+              <h2>{title || doc.metadata?.rootElement || "Unknown"}</h2>
+            )}
           </div>
-          <button
-            className="delete-button"
-            onClick={() => handleDelete(doc._id)}
-          >
-            Delete
-          </button>
+          <div className="document-buttons">
+            {isEditingTitle ? (
+              <>
+                <button className="edit-button" onClick={handleUpdateTitle}>
+                  Save
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => {
+                    setTitle(doc.title || "");
+                    setIsEditingTitle(false);
+                  }}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="edit-button"
+                  onClick={() => setIsEditingTitle(true)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDelete(doc._id)}
+                >
+                  Delete
+                </button>
+              </>
+            )}
+          </div>
         </div>
         <pre className="xml-viewer">{doc.originalXml}</pre>
         <div className="ai-analysis">

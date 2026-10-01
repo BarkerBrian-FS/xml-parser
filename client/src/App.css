@@ -131,6 +131,15 @@ body:has(.app.dark) {
   border: 1px solid #374151;
 }
 
+.app.dark .edit-button {
+  background: #f3f4f6;
+  border-color: #4b5563;
+  color: #111827;
+}
+.app.dark .edit-button:hover {
+  background: #e5e7eb;
+}
+
 .app.dark .delete-button {
   background: #374151;
   border-color: #4b5563;
@@ -254,6 +263,27 @@ body:has(.app.dark) {
   line-height: 1.6;
   white-space: pre;
 }
+.document-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.edit-button {
+  padding: 8px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.edit-button:hover {
+  background: #374151;
+}
+
 .delete-button {
   padding: 8px 14px;
   border: 1px solid #d1d5db;
