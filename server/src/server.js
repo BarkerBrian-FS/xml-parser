@@ -91,7 +91,7 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
     pdf.fontSize(20).text("AI Data Intelligence Report");
 
     pdf
-      .font(12)
+      .fontSize(12)
       .text(
         `Document: ${document.title || document.metadata?.rootElement || "Untitled"}`,
       );
