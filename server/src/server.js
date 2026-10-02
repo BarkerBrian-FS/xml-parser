@@ -25,6 +25,25 @@ function formatStatisticName(name) {
     .replace(/([A-Z])/g, " $1")
     .replace(/^./, (letter) => letter.toUpperCase());
 }
+
+function addSectionHeader(pdf, title) {
+  pdf
+    .moveDown(1)
+    .fontSize(15)
+    .font("Helvetica-Bold")
+    .fillColor("#1f2937")
+    .text(title);
+
+  pdf
+    .moveDown(0.3)
+    .strokeColor("#e5e7eb")
+    .lineWidth(0.5)
+    .moveTo(50, pdf.y)
+    .lineTo(562, pdf.y)
+    .stroke();
+
+  pdf.fillColor("#000000");
+}
 /* GET Routes */
 app.get("/api/health", (req, res) => {
   res.json({
@@ -94,25 +113,38 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
 
     pdf.pipe(res);
 
-    pdf.fontSize(20).text("AI Data Intelligence Report");
+    pdf.fontSize(20).font("Helvetica-Bold").text("AI Data Intelligence Report");
 
     pdf
       .fontSize(14)
+      .font("Helvetica")
       .text(
         `Document: ${document.title || document.metadata?.rootElement || "Untitled"}`,
       );
 
     pdf
       .fontSize(12)
+      .fillColor("#666666")
       .text(`Document Type: ${document.aiAnalysis?.documentType || "Unknown"}`);
 
-    pdf.moveDown(1).fontSize(16).text("Executive Summary");
+    pdf.fillColor("#000000");
+
+    pdf
+      .moveDown(0.8)
+      .strokeColor("#d1d5db")
+      .lineWidth(1)
+      .moveTo(50, pdf.y)
+      .lineTo(562, pdf.y)
+      .stroke();
+
+    addSectionHeader(pdf, "Executive Summary");
+
     pdf
       .moveDown(0.5)
       .fontSize(11)
       .text(document.aiAnalysis?.summary || "No summary available.");
 
-    pdf.moveDown(1).fontSize(16).text("Key Entities");
+    addSectionHeader(pdf, "Key Entities");
 
     document.aiAnalysis?.entities.forEach((entity) => {
       pdf.moveDown(0.5).fontSize(12).text(`${entity.name} (${entity.type})`);
@@ -120,19 +152,19 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
       pdf.fontSize(10).text(entity.description || "No description available.");
     });
 
-    pdf.moveDown(1).fontSize(16).text("Insights");
+    addSectionHeader(pdf, "Insights");
 
     document.aiAnalysis?.insights?.forEach((insight) => {
       pdf.moveDown(0.5).fontSize(11).text(`- ${insight}`);
     });
 
-    pdf.moveDown(1).fontSize(16).text("Warnings");
+    addSectionHeader(pdf, "Warnings");
 
     document.aiAnalysis?.warnings?.forEach((warning) => {
       pdf.moveDown(0.5).fontSize(11).text(`- ${warning}`);
     });
 
-    pdf.moveDown(1).fontSize(16).text("Statistics");
+    addSectionHeader(pdf, "Statistics");
 
     document.aiAnalysis?.statistics?.forEach((statistic) => {
       pdf
@@ -144,7 +176,7 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
       pdf.fontSize(10).text(statistic.description || "");
     });
 
-    pdf.moveDown(1).fontSize(16).text("Suggested Questions");
+    addSectionHeader(pdf, "Suggested Questions");
 
     document.aiAnalysis?.suggestedQuestions?.forEach((question) => {
       pdf.moveDown(0.5).fontSize(11).text(`- ${question}`);
@@ -162,6 +194,54 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
 
     res.status(500).json({
       message: "Faidled to generate PDF",
+    });
+  }
+});
+
+app.get("/api/xml/documents/:id/json", async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid document Id",
+      });
+    }
+    const document = await Document.findById(req.params.id);
+
+    if (!document) {
+      return res.status(404).json({
+        message: "Document not found",
+      });
+    }
+
+    const exportData = {
+      title: document.title || document.metadata?.rootElement || "Untitled",
+
+      documentType: document.aiAnalysis?.documentType || "Unknown",
+
+      summary: document.aiAnalysis?.summary || "",
+
+      entities: document.aiAnalysis?.entities || [],
+
+      insights: document.aiAnalysis?.insights || [],
+
+      warnings: document.aiAnalysis?.warnings || [],
+
+      statistics: document.aiAnalysis?.statistics || [],
+
+      suggestedQuestions: document.aiAnalysis?.suggestedQuestions || [],
+    };
+
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="document-${document._id}.json"`,
+    );
+
+    res.json(exportData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to export JSON",
     });
   }
 });
