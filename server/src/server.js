@@ -62,6 +62,29 @@ app.get("/api/xml/documents/:id", async (req, res) => {
   }
 });
 
+app.get("/api/xml/documents/:id/pdf", async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid document Id",
+      });
+    }
+    const document = await Document.findById(req.params.id);
+
+    if (!document) {
+      return res.status(404).json({
+        message: "Document not found",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Faidled to generate PDF",
+    });
+  }
+});
+
 /* POST Routes */
 app.post("/api/xml/ask", async (req, res) => {
   console.log("Hit ask route");

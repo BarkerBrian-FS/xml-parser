@@ -12,7 +12,6 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
-  const [selectedDocument, setSelectedDocument] = useState(null);
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -89,22 +88,12 @@ function App() {
       setIsAnalyzing(false);
     }
   }
-  async function handleViewDocument(documentId) {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/xml/documents/${documentId}`,
-      );
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to load document");
-      }
-
-      setSelectedDocument(data);
-    } catch (error) {
-      console.error("Failed to load document:", error);
-    }
+  function handleDeleteDocument(documentId) {
+    setDocuments((currentDocuments) =>
+      currentDocuments.filter((document) => document._id !== documentId),
+    );
   }
+
   useEffect(() => {
     fetch("http://localhost:5000/api/xml/documents")
       .then((response) => {
@@ -126,11 +115,6 @@ function App() {
       });
   }, []);
 
-  function handleDeleteDocument(documentId) {
-    setDocuments((currentDocuments) =>
-      currentDocuments.filter((document) => document._id !== documentId),
-    );
-  }
   return (
     <main className={`app ${darkMode ? "dark" : ""}`}>
       <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
@@ -177,7 +161,6 @@ function App() {
             key={doc._id}
             doc={doc}
             onDelete={handleDeleteDocument}
-            onView={handleViewDocument}
           />
         ))}
       </div>

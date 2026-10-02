@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const DocumentCard = ({ doc, onDelete, onView }) => {
+const DocumentCard = ({ doc, onDelete }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [isAsking, setIsAsking] = useState(false);
