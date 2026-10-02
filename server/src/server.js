@@ -19,6 +19,12 @@ app.use(express.text({ type: "application/xml" }));
 const PORT = 5000;
 connectDB(process.env.MONGO_URI);
 
+/* Format names for pdf  */
+function formatStatisticName(name) {
+  return name
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (letter) => letter.toUpperCase());
+}
 /* GET Routes */
 app.get("/api/health", (req, res) => {
   res.json({
@@ -91,12 +97,64 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
     pdf.fontSize(20).text("AI Data Intelligence Report");
 
     pdf
-      .fontSize(12)
+      .fontSize(14)
       .text(
         `Document: ${document.title || document.metadata?.rootElement || "Untitled"}`,
       );
 
-    pdf.text("PDF generation is working");
+    pdf
+      .fontSize(12)
+      .text(`Document Type: ${document.aiAnalysis?.documentType || "Unknown"}`);
+
+    pdf.moveDown(1).fontSize(16).text("Executive Summary");
+    pdf
+      .moveDown(0.5)
+      .fontSize(11)
+      .text(document.aiAnalysis?.summary || "No summary available.");
+
+    pdf.moveDown(1).fontSize(16).text("Key Entities");
+
+    document.aiAnalysis?.entities.forEach((entity) => {
+      pdf.moveDown(0.5).fontSize(12).text(`${entity.name} (${entity.type})`);
+
+      pdf.fontSize(10).text(entity.description || "No description available.");
+    });
+
+    pdf.moveDown(1).fontSize(16).text("Insights");
+
+    document.aiAnalysis?.insights?.forEach((insight) => {
+      pdf.moveDown(0.5).fontSize(11).text(`- ${insight}`);
+    });
+
+    pdf.moveDown(1).fontSize(16).text("Warnings");
+
+    document.aiAnalysis?.warnings?.forEach((warning) => {
+      pdf.moveDown(0.5).fontSize(11).text(`- ${warning}`);
+    });
+
+    pdf.moveDown(1).fontSize(16).text("Statistics");
+
+    document.aiAnalysis?.statistics?.forEach((statistic) => {
+      pdf
+        .moveDown(0.5)
+        .fontSize(12)
+        .text(
+          `${formatStatisticName(statistic.name)}: ${statistic.value}${statistic.unit ? ` ${statistic.unit}` : ""}`,
+        );
+      pdf.fontSize(10).text(statistic.description || "");
+    });
+
+    pdf.moveDown(1).fontSize(16).text("Suggested Questions");
+
+    document.aiAnalysis?.suggestedQuestions?.forEach((question) => {
+      pdf.moveDown(0.5).fontSize(11).text(`- ${question}`);
+    });
+
+    const range = pdf.bufferedPageRange();
+
+    for (let i = range.start; i < range.start + range.count; i++) {
+      pdf.switchToPage(i);
+    }
 
     pdf.end();
   } catch (error) {
