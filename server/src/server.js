@@ -8,6 +8,7 @@ const cors = require("cors");
 const { analyzeXML } = require("./services/xmlService");
 const connectDB = require("./config/db");
 const mongoose = require("mongoose");
+const PDFDocument = require("pdfkit");
 const Document = require("./models/Documents.js");
 
 const app = express();
@@ -76,6 +77,28 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
         message: "Document not found",
       });
     }
+    const pdf = new PDFDocument();
+
+    res.setHeader("Content-Type", "application/pdf");
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filname-"document-${document._id}.pdf"`,
+    );
+
+    pdf.pipe(res);
+
+    pdf.fontSize(20).text("AI Data Intelligence Report");
+
+    pdf
+      .font(12)
+      .text(
+        `Document: ${document.title || document.metadata?.rootElement || "Untitled"}`,
+      );
+
+    pdf.text("PDF generation is working");
+
+    pdf.end();
   } catch (error) {
     console.error(error);
 
