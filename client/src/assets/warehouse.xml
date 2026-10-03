@@ -1,0 +1,22 @@
+<inventory>
+    <warehouse location="Houston">
+        <item sku="W501">
+            <name>Network Router</name>
+            <category>Networking</category>
+            <quantity>24</quantity>
+            <status>Available</status>
+        </item>
+        <item sku="W502">
+            <name>Ethernet Cable</name>
+            <category>Networking</category>
+            <quantity>350</quantity>
+            <status>Available</status>
+        </item>
+        <item sku="W503">
+            <name>Server Rack</name>
+            <category>Infrastructure</category>
+            <quantity>3</quantity>
+            <status>Low Stock</status>
+        </item>
+    </warehouse>
+</inventory>

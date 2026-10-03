@@ -54,7 +54,19 @@ app.get("/api/health", (req, res) => {
 
 app.get("/api/xml/documents", async (req, res) => {
   try {
-    const documents = await Document.find();
+    const search = req.query.search;
+
+    const query = search
+      ? {
+          $or: [
+            { title: { $regex: search, $options: "i" } },
+            { "metadata.rootElement": { $regex: search, $options: "i" } },
+            { "aiAnalysis.documentType": { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const documents = await Document.find(query);
 
     res.json(documents);
   } catch (error) {

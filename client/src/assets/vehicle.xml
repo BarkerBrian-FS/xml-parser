@@ -1,0 +1,23 @@
+<fleet>
+    <vehicle id="V401">
+        <make>Toyota</make>
+        <model>Camry</model>
+        <year>2024</year>
+        <mileage>18420</mileage>
+        <status>Active</status>
+    </vehicle>
+    <vehicle id="V402">
+        <make>Ford</make>
+        <model>F-150</model>
+        <year>2023</year>
+        <mileage>32110</mileage>
+        <status>Maintenance</status>
+    </vehicle>
+    <vehicle id="V403">
+        <make>Honda</make>
+        <model>Civic</model>
+        <year>2025</year>
+        <mileage>8420</mileage>
+        <status>Active</status>
+    </vehicle>
+</fleet>

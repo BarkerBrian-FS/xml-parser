@@ -12,6 +12,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [search, setSearch] = useState("");
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -95,7 +96,9 @@ function App() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/xml/documents")
+    fetch(
+      `http://localhost:5000/api/xml/documents?search=${encodeURIComponent(search)}`,
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to load documents");
@@ -113,7 +116,7 @@ function App() {
       .finally(() => {
         setIsLoadingDocuments(false);
       });
-  }, []);
+  }, [search]);
 
   return (
     <main className={`app ${darkMode ? "dark" : ""}`}>
@@ -155,6 +158,14 @@ function App() {
       {!isLoadingDocuments && !documentsError && documents.length === 0 && (
         <p className="documents-status">No documents yet</p>
       )}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search documents..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        ></input>
+      </div>
       <div className="documents-container">
         {documents.map((doc) => (
           <DocumentCard

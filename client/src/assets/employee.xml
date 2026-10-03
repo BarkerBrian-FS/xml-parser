@@ -1,0 +1,20 @@
+<employees>
+    <employee id="E101">
+        <name>Sarah Mitchell</name>
+        <department>Engineering</department>
+        <role>Software Engineer</role>
+        <status>Active</status>
+    </employee>
+    <employee id="E102">
+        <name>Daniel Brooks</name>
+        <department>Finance</department>
+        <role>Financial Analyst</role>
+        <status>Active</status>
+    </employee>
+    <employee id="E103">
+        <name>Jessica Turner</name>
+        <department>Human Resources</department>
+        <role>HR Manager</role>
+        <status>Inactive</status>
+    </employee>
+</employees>
