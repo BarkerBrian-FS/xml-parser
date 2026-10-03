@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const DocumentCard = ({ doc, onDelete }) => {
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [messages, setMessages] = useState([]);
   const [isAsking, setIsAsking] = useState(false);
   const [askError, setAskError] = useState("");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -11,7 +11,13 @@ const DocumentCard = ({ doc, onDelete }) => {
   async function handleAsk(documentId, questionText = question) {
     setIsAsking(true);
     setAskError("");
-    setAnswer("");
+    setMessages((previousMessages) => [
+      ...previousMessages,
+      {
+        role: "user",
+        content: question,
+      },
+    ]);
 
     try {
       const response = await fetch("http://localhost:5000/api/xml/ask", {
@@ -30,7 +36,13 @@ const DocumentCard = ({ doc, onDelete }) => {
         throw new Error(data.message || "Failed to get an answer.");
       }
 
-      setAnswer(data.answer);
+      setMessages((previousMessages) => [
+        ...previousMessages,
+        {
+          role: "assistant",
+          content: data.answer,
+        },
+      ]);
     } catch (error) {
       setAskError(error.message);
     } finally {

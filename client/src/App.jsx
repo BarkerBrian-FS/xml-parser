@@ -213,7 +213,7 @@ function App() {
       </div>
 
       <div className="documents-container">
-        {documents.length === 0 && search ? (
+        {filteredDocuments.length === 0 && (search || filter === "warnings") ? (
           <p>No documents found for "{search}"</p>
         ) : (
           sortedDocuments.map((doc) => (
