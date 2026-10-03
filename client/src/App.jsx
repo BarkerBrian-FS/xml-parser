@@ -13,6 +13,7 @@ function App() {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("newest");
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -118,6 +119,29 @@ function App() {
       });
   }, [search]);
 
+  const sortedDocuments = [...documents].sort((a, b) => {
+    const titleA = a.title || a.metadata?.rootElement || "";
+    const titleB = b.title || b.metadata?.rootElement || "";
+
+    if (sort === "title-asc") {
+      return titleA.localeCompare(titleB);
+    }
+
+    if (sort === "title-desc") {
+      return titleB.localeCompare(titleA);
+    }
+
+    if (sort === "newest") {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    }
+
+    if (sort === "oldest") {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    }
+
+    return 0;
+  });
+
   return (
     <main className={`app ${darkMode ? "dark" : ""}`}>
       <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
@@ -165,13 +189,21 @@ function App() {
           placeholder="Search documents..."
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-        ></input>
+        />
+
+        <select value={sort} onChange={(event) => setSort(event.target.value)}>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="title-asc">Title A-Z</option>
+          <option value="title-desc">Title Z-A</option>
+        </select>
       </div>
+
       <div className="documents-container">
         {documents.length === 0 && search ? (
           <p>No documents found for "{search}"</p>
         ) : (
-          documents.map((doc) => (
+          sortedDocuments.map((doc) => (
             <DocumentCard
               key={doc._id}
               doc={doc}
