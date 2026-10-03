@@ -156,6 +156,16 @@ body:has(.app.dark) {
 .app.dark .delete-button:hover {
   background: #4b5563;
 }
+
+.app.dark .document-actions button {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+.app.dark .document-actions button:hover {
+  background: #4b5563;
+  border-color: #6b7280;
+}
 .app.dark .stat-card {
   background: #111827;
   border-color: #374151;
@@ -330,6 +340,31 @@ body:has(.app.dark) {
   align-items: center;
   margin-bottom: 8px;
   margin: 8px;
+}
+.document-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.document-actions button {
+  padding: 8px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.document-actions button:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
 }
 .edit-button {
   padding: 8px 14px;

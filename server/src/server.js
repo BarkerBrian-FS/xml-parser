@@ -26,6 +26,7 @@ function formatStatisticName(name) {
     .replace(/^./, (letter) => letter.toUpperCase());
 }
 
+/* Helper for pdf section headers */
 function addSectionHeader(pdf, title) {
   pdf
     .moveDown(1)
