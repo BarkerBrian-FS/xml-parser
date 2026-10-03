@@ -14,6 +14,7 @@ function App() {
   const [fileName, setFileName] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
+  const [filter, setFilter] = useState("all");
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -196,6 +197,13 @@ function App() {
           <option value="oldest">Oldest</option>
           <option value="title-asc">Title A-Z</option>
           <option value="title-desc">Title Z-A</option>
+        </select>
+        <select
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+        >
+          <option value="all">All Documents</option>
+          <option value="warnings">Has Warnings</option>
         </select>
       </div>
 
