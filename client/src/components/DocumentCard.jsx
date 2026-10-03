@@ -141,6 +141,26 @@ const DocumentCard = ({ doc, onDelete }) => {
           </div>
         </div>
         <pre className="xml-viewer">{doc.originalXml}</pre>
+        <div className="document-actions">
+          <button
+            onClick={() =>
+              window.open(
+                `http://localhost:5000/api/xml/documents/${doc._id}/pdf`,
+              )
+            }
+          >
+            Export PDF
+          </button>
+          <button
+            onClick={() =>
+              window.open(
+                `http://localhost:5000/api/xml/documents/${doc._id}/json`,
+              )
+            }
+          >
+            Export JSON
+          </button>
+        </div>
         <div className="ai-analysis">
           <h3>AI Analysis</h3>
           <div className="overview-grid">

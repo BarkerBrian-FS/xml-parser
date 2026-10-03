@@ -237,7 +237,7 @@ app.get("/api/xml/documents/:id/json", async (req, res) => {
       `attachment; filename="document-${document._id}.json"`,
     );
 
-    res.json(exportData);
+    res.send(JSON.stringify(exportData, null, 2));
   } catch (error) {
     console.error(error);
     res.status(500).json({
