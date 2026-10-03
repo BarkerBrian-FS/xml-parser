@@ -119,8 +119,13 @@ function App() {
         setIsLoadingDocuments(false);
       });
   }, [search]);
-
-  const sortedDocuments = [...documents].sort((a, b) => {
+  const filteredDocuments = documents.filter((doc) => {
+    if (filter === "warnings") {
+      return doc.aiAnalysis?.warnings?.length > 0;
+    }
+    return true;
+  });
+  const sortedDocuments = [...filteredDocuments].sort((a, b) => {
     const titleA = a.title || a.metadata?.rootElement || "";
     const titleB = b.title || b.metadata?.rootElement || "";
 
