@@ -277,13 +277,14 @@ const DocumentCard = ({ doc, onDelete }) => {
                 {isAsking ? "Asking..." : "Ask"}
               </button>
             </div>
-            {askError && <p className="error-message">{askError}</p>}
-            {answer && (
-              <div className="ai-answer">
-                <h4>AI Answer</h4>
-                <p>{answer}</p>
-              </div>
-            )}
+            <div className="chat-messages">
+              {messages.map((message, index) => (
+                <div key={index} className={`chat-message ${message.role}`}>
+                  <strong>{message.role === "user" ? "You" : "AI"}</strong>
+                  <p>{message.content}</p>
+                </div>
+              ))}
+            </div>
           </div>
           {doc.aiAnalysis?.suggestedQuestions?.length > 0 && (
             <>
