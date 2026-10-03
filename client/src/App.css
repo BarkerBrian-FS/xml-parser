@@ -491,6 +491,29 @@ body:has(.app.dark) {
 }
 
 /* Ask About Data */
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.chat-message {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 10px;
+}
+.chat-message p {
+  margin: 6px 0 0;
+}
+.chat-message.user {
+  align-self: flex-end;
+  background: #e5e7eb;
+  text-align: right;
+}
+.chat-message.assistant {
+  align-self: flex-start;
+  background: #f3f4f6;
+}
 .ask-section {
   margin-top: 32px;
   padding: 24px;
