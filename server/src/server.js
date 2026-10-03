@@ -88,6 +88,7 @@ app.get("/api/xml/documents/:id", async (req, res) => {
   }
 });
 
+/* Export Routes PDF JSON and XML */
 app.get("/api/xml/documents/:id/pdf", async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -242,6 +243,36 @@ app.get("/api/xml/documents/:id/json", async (req, res) => {
     console.error(error);
     res.status(500).json({
       message: "Failed to export JSON",
+    });
+  }
+});
+
+app.get("/api/xml/documents/:id/xml", async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid document Id",
+      });
+    }
+    const document = await Document.findById(req.params.id);
+
+    if (!document) {
+      return res.status(404).json({
+        message: "Document not found",
+      });
+    }
+
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filname="document-${document._id}.xml"`,
+    );
+
+    res.send(document.originalXml);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Failed to export XML",
     });
   }
 });

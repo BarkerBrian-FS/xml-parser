@@ -146,6 +146,7 @@ const DocumentCard = ({ doc, onDelete }) => {
             onClick={() =>
               window.open(
                 `http://localhost:5000/api/xml/documents/${doc._id}/pdf`,
+                "_blank",
               )
             }
           >
@@ -155,10 +156,21 @@ const DocumentCard = ({ doc, onDelete }) => {
             onClick={() =>
               window.open(
                 `http://localhost:5000/api/xml/documents/${doc._id}/json`,
+                "_blank",
               )
             }
           >
             Export JSON
+          </button>
+          <button
+            onClick={() =>
+              window.open(
+                `http://localhost:5000/api/xml/documents/${doc._id}/xml`,
+                "_blank",
+              )
+            }
+          >
+            Export XML
           </button>
         </div>
         <div className="ai-analysis">
