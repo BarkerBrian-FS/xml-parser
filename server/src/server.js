@@ -62,6 +62,8 @@ app.get("/api/xml/documents", async (req, res) => {
             { title: { $regex: search, $options: "i" } },
             { "metadata.rootElement": { $regex: search, $options: "i" } },
             { "aiAnalysis.documentType": { $regex: search, $options: "i" } },
+            { "aiAnalysis.summary": { $regex: search, $options: "i" } },
+            { "aiAnalysis.entities.name": { $regex: search, $options: "i" } },
           ],
         }
       : {};

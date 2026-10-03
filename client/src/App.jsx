@@ -158,6 +158,7 @@ function App() {
       {!isLoadingDocuments && !documentsError && documents.length === 0 && (
         <p className="documents-status">No documents yet</p>
       )}
+
       <div className="search-container">
         <input
           type="text"
@@ -167,13 +168,17 @@ function App() {
         ></input>
       </div>
       <div className="documents-container">
-        {documents.map((doc) => (
-          <DocumentCard
-            key={doc._id}
-            doc={doc}
-            onDelete={handleDeleteDocument}
-          />
-        ))}
+        {documents.length === 0 && search ? (
+          <p>No documents found for "{search}"</p>
+        ) : (
+          documents.map((doc) => (
+            <DocumentCard
+              key={doc._id}
+              doc={doc}
+              onDelete={handleDeleteDocument}
+            />
+          ))
+        )}
       </div>
     </main>
   );
