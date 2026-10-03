@@ -190,6 +190,12 @@ body:has(.app.dark) {
   border-color: #4b5563;
   color: #e5e7eb;
 }
+.dark .search-container input,
+.dark .search-container select {
+  background: #1f2937;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
 
 /* Documents Status Loading/None Found */
 .documents-status {
@@ -273,6 +279,29 @@ body:has(.app.dark) {
 }
 .browse-button input {
   display: none;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.search-container input,
+.search-container select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.search-container input {
+  flex: 1;
+}
+
+.search-container select {
+  cursor: pointer;
 }
 /* Analyze Xml Button */
 .analyze-button {
