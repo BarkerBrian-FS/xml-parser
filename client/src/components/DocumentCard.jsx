@@ -285,6 +285,16 @@ const DocumentCard = ({ doc, onDelete }) => {
                   <p>{message.content}</p>
                 </div>
               ))}
+              {isAsking && (
+                <div className="chat-message assistant">
+                  <strong>AI</strong>
+                  <p className="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           {doc.aiAnalysis?.suggestedQuestions?.length > 0 && (
