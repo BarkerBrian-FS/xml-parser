@@ -17,6 +17,7 @@ const DocumentCard = ({ doc, onDelete }) => {
         role: "user",
         content: question,
       },
+      setQuestion(""),
     ]);
 
     try {
@@ -45,7 +46,15 @@ const DocumentCard = ({ doc, onDelete }) => {
         },
       ]);
     } catch (error) {
-      setAskError(error.message);
+      console.error(error);
+
+      setMessages((previousMessages) => [
+        ...previousMessages,
+        {
+          role: "assistant",
+          content: "Sorry, I couldn't process that question. Please try again.",
+        },
+      ]);
     } finally {
       setIsAsking(false);
     }
@@ -284,12 +293,15 @@ const DocumentCard = ({ doc, onDelete }) => {
               </button>
             </div>
             <div className="chat-messages">
-              {messages.map((message, index) => (
-                <div key={index} className={`chat-message ${message.role}`}>
-                  <strong>{message.role === "user" ? "You" : "AI"}</strong>
-                  <p>{message.content}</p>
-                </div>
-              ))}
+              {messages
+                .filter((message) => message)
+                .map((message, index) => (
+                  <div key={index} className={`chat-message ${message.role}`}>
+                    <strong>{message.role === "user" ? "You" : "AI"}</strong>
+
+                    <p>{message.content}</p>
+                  </div>
+                ))}
               {isAsking && (
                 <div className="chat-message assistant">
                   <strong>AI</strong>

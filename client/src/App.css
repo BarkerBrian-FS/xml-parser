@@ -568,6 +568,10 @@ body:has(.app.dark) {
   font-size: 13px;
   cursor: pointer;
 }
+.chat-header button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .chat-header button:hover {
   background: #f3f4f6;
 }
