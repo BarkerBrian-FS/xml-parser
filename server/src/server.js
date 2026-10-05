@@ -296,7 +296,7 @@ app.get("/api/xml/documents/:id/xml", async (req, res) => {
 app.post("/api/xml/ask", async (req, res) => {
   console.log("Hit ask route");
   try {
-    const { documentId, question } = req.body;
+    const { documentId, question, messages } = req.body;
 
     const doc = await Document.findById(documentId);
 
@@ -311,6 +311,7 @@ app.post("/api/xml/ask", async (req, res) => {
       doc.metadata,
       doc.aiAnalysis,
       question,
+      messages,
     );
 
     res.json({

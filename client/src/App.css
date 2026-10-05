@@ -496,6 +496,9 @@ body:has(.app.dark) {
   flex-direction: column;
   gap: 12px;
   margin-top: 16px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 12px;
 }
 .chat-message {
   max-width: 80%;

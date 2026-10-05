@@ -28,6 +28,7 @@ const DocumentCard = ({ doc, onDelete }) => {
         body: JSON.stringify({
           documentId: documentId,
           question: questionText,
+          messages,
         }),
       });
       const data = await response.json();

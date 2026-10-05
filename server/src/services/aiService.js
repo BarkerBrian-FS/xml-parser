@@ -4,12 +4,20 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-async function askAboutDocument(data, metadata, aiAnalysis, question) {
+async function askAboutDocument(
+  data,
+  metadata,
+  aiAnalysis,
+  question,
+  messages,
+) {
   const prompt = `
 Answer the user's question using only the provided document data and analysis.
 
 Do not invent information or make assumptions.
 If the answer cannot be determined from the provided information, clearly say so.
+
+Conversation history: ${JSON.stringify(messages || [], null, 2)}
 
 User question:
 ${question}
