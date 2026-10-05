@@ -4,6 +4,12 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
+function getElementCount(metadata, elementName) {
+  const counts = metadata?.elementCounts || {};
+
+  return counts[elementName] ?? 0;
+}
+
 async function askAboutDocument(
   data,
   metadata,
@@ -11,6 +17,19 @@ async function askAboutDocument(
   question,
   messages,
 ) {
+  const countMatch = question.match(/how many\s+(\w+)(?:\s+elements?)?/i);
+
+  if (countMatch) {
+    const elementName = countMatch[1].toLowerCase();
+
+    const singularName = elementName.endsWith("s")
+      ? elementName.slice(0, -1)
+      : elementName;
+
+    const count = getElementCount(metadata, singularName);
+
+    return `There are ${count} ${singularName} elements in the document.`;
+  }
   const prompt = `
 Answer the user's question using only the provided document data and analysis.
 
