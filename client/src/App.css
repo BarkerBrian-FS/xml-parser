@@ -550,6 +550,27 @@ body:has(.app.dark) {
     transform: translateY(-3px);
   }
 }
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.chat-header h3 {
+  margin: 0;
+}
+.chat-header button {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 13px;
+  cursor: pointer;
+}
+.chat-header button:hover {
+  background: #f3f4f6;
+}
 .ask-section {
   margin-top: 32px;
   padding: 24px;

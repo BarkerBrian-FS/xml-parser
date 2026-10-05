@@ -262,7 +262,12 @@ const DocumentCard = ({ doc, onDelete }) => {
             </>
           )}
           <div className="ask-section">
-            <h3>Ask About This Data</h3>
+            <div className="chat-header">
+              <h3>Ask About This Data</h3>
+              {messages.length > 0 && (
+                <button onClick={() => setMessages([])}>Clear Chat</button>
+              )}
+            </div>
             <div className="ask-controls">
               <input
                 type="text"
