@@ -7,7 +7,10 @@ const ai = new GoogleGenAI({
 function getElementCount(metadata, elementName) {
   const counts = metadata?.elementCounts || {};
 
-  return counts[elementName] ?? 0;
+  if (!(elementName in counts)) {
+    return null;
+  }
+  return counts[elementName];
 }
 
 async function askAboutDocument(
