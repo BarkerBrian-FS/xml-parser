@@ -88,7 +88,21 @@ async function askAboutDocument(
     if (results.length === 0) {
       return `The document does not contain any "${singularName}" elements.`;
     }
-    return JSON.stringify(results, null, 2);
+    const prompt = `Answer the user's question using the retrieved document records below.
+    Present the results in a clean, readable way for the user. 
+    Do not invent or modify any information.
+    Only use the provided records.
+    
+    User question: ${question}
+    Retrieved records: ${JSON.stringify(results, null, 2)}`;
+
+    const MODEL = "gemini-3.5-flash-lite";
+
+    const response = await generateWithRetry({
+      model: MODEL,
+      contents: prompt,
+    });
+    return response.text;
   }
   const prompt = `
 Answer the user's question using only the provided document data and analysis.
