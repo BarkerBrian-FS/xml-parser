@@ -13,6 +13,40 @@ function getElementCount(metadata, elementName) {
   return counts[elementName];
 }
 
+function findElements(data, elementName) {
+  if (!data || typeof data !== "object") {
+    return [];
+  }
+
+  const results = [];
+
+  function searchObject(obj) {
+    if (!obj || typeof obj !== "object") {
+      return;
+    }
+
+    for (const key of Object.keys(obj)) {
+      const value = obj[key];
+
+      if (key === elementName) {
+        if (Array.isArray(value)) {
+          results.push(...value);
+        } else {
+          results.push(value);
+        }
+      }
+
+      if (value && typeof value === "object") {
+        searchObject(value);
+      }
+    }
+  }
+
+  searchObject(data);
+
+  return results;
+}
+
 async function askAboutDocument(
   data,
   metadata,
@@ -36,6 +70,25 @@ async function askAboutDocument(
     }
 
     return `There are ${count} ${singularName} elements in the document.`;
+  }
+
+  const findMatch = question.match(
+    /(?:show|find|get|list)\s+(?:all\s+)?(\w+)/i,
+  );
+
+  if (findMatch) {
+    const elementName = findMatch[1].toLowerCase();
+
+    const singularName = elementName.endsWith("s")
+      ? elementName.slice(0, -1)
+      : elementName;
+
+    const results = findElements(data, singularName);
+
+    if (results.length === 0) {
+      return `The document does not contain any "${singularName}" elements.`;
+    }
+    return JSON.stringify(results, null, 2);
   }
   const prompt = `
 Answer the user's question using only the provided document data and analysis.
