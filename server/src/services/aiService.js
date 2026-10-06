@@ -56,6 +56,20 @@ function searchElements(data, elementName, searchTerm) {
     JSON.stringify(element).toLowerCase().includes(lowerSearchTerm),
   );
 }
+function sumElementValues(data, elementName, fieldName) {
+  const elements = findElements(data, elementName);
+
+  let total = 0;
+
+  for (const element of elements) {
+    const value = Number(element[fieldName]);
+
+    if (!Number.isNaN(value)) {
+      total += value;
+    }
+  }
+  return total;
+}
 async function askAboutDocument(
   data,
   metadata,
@@ -72,12 +86,14 @@ async function askAboutDocument(
 
   1. "count" if the user wants to know how many elements or records exist.
   2. "search" if the user wants to find specific records.
-  3. "general" for anything else.
+  3. "calculate" if the user wants a total, sum, average, or other calculation using document data.
+  4. "general" for anything else.
   
   Return only valid JSON in this format:
   {
-    "intent": "count" | "search" | "general",
+    "intent": "count" | "search" | "calculate" | "general",
     "elementName": "",
+    "fieldName": "",
     "searchTerm": ""
   }
   
@@ -137,58 +153,17 @@ async function askAboutDocument(
 
     return response.text;
   }
+
+  if (intent.intent === "calculate") {
+    const elementName = intent.elementName.toLowerCase();
+    const fieldName = intent.fieldName.toLowerCase();
+
+    const total = sumElementValues(data, elementName, fieldName);
+
+    return `The total ${fieldName} across all ${elementName}s is ${total.toLocaleString()}.`;
+  }
+
   console.log("AI Intent:", intent);
-
-  const countMatch = question.match(/how many\s+(\w+)(?:\s+elements?)?/i);
-
-  if (countMatch) {
-    const elementName = countMatch[1].toLowerCase();
-
-    const singularName = elementName.endsWith("s")
-      ? elementName.slice(0, -1)
-      : elementName;
-
-    const count = getElementCount(metadata, singularName);
-
-    if (count === null) {
-      return `The document does not contain any "${singularName}" elements.`;
-    }
-
-    return `There are ${count} ${singularName} elements in the document.`;
-  }
-
-  const findMatch = question.match(
-    /(?:show|find|get|list)\s+(?:all\s+)?(\w+)/i,
-  );
-
-  if (findMatch) {
-    const elementName = findMatch[1].toLowerCase();
-
-    const singularName = elementName.endsWith("s")
-      ? elementName.slice(0, -1)
-      : elementName;
-
-    const results = findElements(data, singularName);
-
-    if (results.length === 0) {
-      return `The document does not contain any "${singularName}" elements.`;
-    }
-    const prompt = `Answer the user's question using the retrieved document records below.
-    Present the results in a clean, readable way for the user. 
-    Do not invent or modify any information.
-    Only use the provided records.
-    
-    User question: ${question}
-    Retrieved records: ${JSON.stringify(results, null, 2)}`;
-
-    const MODEL = "gemini-3.5-flash-lite";
-
-    const response = await generateWithRetry({
-      model: MODEL,
-      contents: prompt,
-    });
-    return response.text;
-  }
 
   const searchMatch = question.match(
     /(?:find|search)\s+(?:all\s+)?(\w+)\s+(?:in|with|containing)\s+(.+)/i,
