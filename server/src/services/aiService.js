@@ -63,6 +63,54 @@ async function askAboutDocument(
   question,
   messages,
 ) {
+  const MODEL = "gemini-3.5-flash-lite";
+
+  const intentPrompt = `
+  Determing whether the user's question is asking to
+  
+  Possible intents:
+
+  1. "count" if the user wants to know how many elements or records exist.
+  2. "search" if the user wants to find specific records.
+  3. "general" for anything else.
+  
+  Return only valid JSON in this format:
+  {
+    "intent": "count" | "search" | "general",
+    "elementName": "",
+    "searchTerm": ""
+  }
+  
+  Use the available XML elements to identify the correct element name.
+
+  Available XML elements: ${JSON.stringify(metadata?.elements || [])}
+
+  User question : ${question}
+  `;
+
+  const intentResponse = await generateWithRetry({
+    model: MODEL,
+    contents: intentPrompt,
+    config: {
+      responseMimeType: "application/json",
+    },
+  });
+
+  const intent = JSON.parse(intentResponse.text);
+
+  if (intent.intent === "count") {
+    const elementName = intent.elementName.toLowerCase();
+
+    const count = getElementCount(metadata, elementName);
+
+    if (count === null) {
+      return `The document does not contain any "${elementName}" elements.`;
+    }
+
+    return `There are ${count} ${elementName} elements in the document.`;
+  }
+  console.log("AI Intent:", intent);
+
   const countMatch = question.match(/how many\s+(\w+)(?:\s+elements?)?/i);
 
   if (countMatch) {
@@ -172,8 +220,6 @@ ${JSON.stringify(metadata, null, 2)}
 Existing AI analysis:
 ${JSON.stringify(aiAnalysis, null, 2)}
 `;
-
-  const MODEL = "gemini-3.5-flash-lite";
 
   const response = await generateWithRetry({
     model: MODEL,
