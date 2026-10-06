@@ -31,6 +31,10 @@ async function askAboutDocument(
 
     const count = getElementCount(metadata, singularName);
 
+    if (count === null) {
+      return `The document does not contain any "${singularName}" elements.`;
+    }
+
     return `There are ${count} ${singularName} elements in the document.`;
   }
   const prompt = `
