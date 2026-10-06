@@ -70,6 +70,21 @@ function sumElementValues(data, elementName, fieldName) {
   }
   return total;
 }
+function sumProductValues(data, elementName, fieldA, fieldB) {
+  const elements = findElements(data, elementName);
+
+  let total = 0;
+
+  for (const element of elements) {
+    const valueA = Number(element[fieldA]);
+    const valueB = Number(element[fieldB]);
+
+    if (!Number.isNaN(valueA) && !Number.isNaN(valueB)) {
+      total += valueA * valueB;
+    }
+  }
+  return total;
+}
 async function askAboutDocument(
   data,
   metadata,
@@ -86,7 +101,42 @@ async function askAboutDocument(
 
   1. "count" if the user wants to know how many elements or records exist.
   2. "search" if the user wants to find specific records.
-  3. "calculate" if the user wants a total, sum, average, or other calculation using document data.
+  3. "calculate" for calculations using document data.
+
+For calculations, determine the operation:
+- "sum" when adding values from a single field.
+- "sum_product" when calculating the total value by multiplying two fields for each record and then adding those results together.
+
+For "sum":
+- fieldName should contain the field being summed.
+- secondaryFieldName should be empty.
+
+For "sum_product":
+- fieldName should contain the first field.
+- secondaryFieldName should contain the second field.
+
+Question: "What is the mileage across all vehicles?"
+Return:
+{
+    "intent": "calculate",
+    "operation": "sum",
+    "elementName": "vehicle",
+    "fieldName": "mileage",
+    "secondaryFieldName": "",
+    "searchTerm": ""
+}
+
+Question: "What is the total value of stock across the entire catalog?"
+Return:
+{
+    "intent": "calculate",
+    "operation": "sum_product",
+    "elementName": "product",
+    "fieldName": "price",
+    "secondaryFieldName": "stock",
+    "searchTerm": ""
+}
+
   4. "general" for anything else.
   
   Return only valid JSON in this format:
@@ -94,6 +144,7 @@ async function askAboutDocument(
     "intent": "count" | "search" | "calculate" | "general",
     "elementName": "",
     "fieldName": "",
+    "secondaryFieldName": "",
     "searchTerm": ""
   }
   
@@ -158,7 +209,22 @@ async function askAboutDocument(
     const elementName = intent.elementName.toLowerCase();
     const fieldName = intent.fieldName.toLowerCase();
 
-    const total = sumElementValues(data, elementName, fieldName);
+    let total;
+
+    if (intent.operation === "sum_product") {
+      const secondaryFieldName = intent.secondaryFieldName.toLowerCase();
+
+      total = sumProductValues(
+        data,
+        elementName,
+        fieldName,
+        secondaryFieldName,
+      );
+    } else {
+      total = sumElementValues(data, elementName, fieldName);
+    }
+    console.log("Calculation intent:", intent);
+    console.log("Calculated total:", total);
 
     return `The total ${fieldName} across all ${elementName}s is ${total.toLocaleString()}.`;
   }
