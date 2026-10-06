@@ -109,6 +109,34 @@ async function askAboutDocument(
 
     return `There are ${count} ${elementName} elements in the document.`;
   }
+
+  if (intent.intent === "search") {
+    const elementName = intent.elementName.toLowerCase();
+    const searchTerm = intent.searchTerm.trim();
+
+    const results = searchElements(data, elementName, searchTerm);
+
+    if (results.length === 0) {
+      return `I couldn't find any ${elementName} elements matching ${searchTerm}.`;
+    }
+
+    const prompt = `Answer the user's question using the retrieved document records below.
+    Present the results in a clean, readable way.
+    
+    Do not invent or modify any information. 
+    Only use the provided records.
+    
+    User question: ${question}
+    
+    Retrieved records: ${JSON.stringify(results, null, 2)}`;
+
+    const response = await generateWithRetry({
+      model: MODEL,
+      contents: prompt,
+    });
+
+    return response.text;
+  }
   console.log("AI Intent:", intent);
 
   const countMatch = question.match(/how many\s+(\w+)(?:\s+elements?)?/i);
