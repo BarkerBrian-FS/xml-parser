@@ -47,6 +47,15 @@ function findElements(data, elementName) {
   return results;
 }
 
+function searchElements(data, elementName, searchTerm) {
+  const elements = findElements(data, elementName);
+
+  const lowerSearchTerm = searchTerm.toLowerCase();
+
+  return elements.filter((element) =>
+    JSON.stringify(element).toLowerCase().includes(lowerSearchTerm),
+  );
+}
 async function askAboutDocument(
   data,
   metadata,
@@ -102,6 +111,45 @@ async function askAboutDocument(
       model: MODEL,
       contents: prompt,
     });
+    return response.text;
+  }
+
+  const searchMatch = question.match(
+    /(?:find|search)\s+(?:all\s+)?(\w+)\s+(?:in|with|containing)\s+(.+)/i,
+  );
+
+  if (searchMatch) {
+    const elementName = searchMatch[1].toLowerCase();
+    const searchTerm = searchMatch[2].trim();
+
+    const singularName = elementName.endsWith("s")
+      ? elementName.slice(0, -1)
+      : elementName;
+
+    const results = searchElements(data, singularName, searchTerm);
+    if (results.length === 0) {
+      return `I couldn't find any "${singularName}" elements matching "${searchTerm}"`;
+    }
+
+    const prompt = ` Answer the user's question using the retrieved document records below.
+
+  Present the results in a clean readable way. 
+  Do not invent or modify the information.
+  Only use the provided records.
+  
+  User question : ${question}
+  
+  Search term: ${searchTerm}
+  
+  Retrieved records: ${JSON.stringify(results, null, 2)}`;
+
+    const MODEL = "gemini-3.5-flash-lite";
+
+    const response = geneerateWithRetry({
+      model: MODEL,
+      contents: prompt,
+    });
+
     return response.text;
   }
   const prompt = `
