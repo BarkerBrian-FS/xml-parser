@@ -144,7 +144,46 @@ function findMinElement(data, elementName, fieldName) {
   }
   return minElement;
 }
-function filterElement() {}
+function filterElements(data, elementName, conditions) {
+  const elements = findElements(data, elementName);
+
+  return elements.filter((element) => {
+    return conditions.every((condition) => {
+      const fieldValue = element[condition.fieldName];
+      const comparisonValue = condition.value;
+
+      switch (condition.operator) {
+        case "equals":
+          return (
+            String(fieldValue).toLowerCase() ===
+            String(comparisonValue).toLowerCase()
+          );
+
+        case "notEquals":
+          return (
+            String(fieldValue).toLowerCase() !==
+            String(comparisonValue).toLowerCase()
+          );
+
+        case "greaterThan":
+          return Number(fieldValue) > Number(comparisonValue);
+
+        case "lessThan":
+          return Number(fieldValue) < Number(comparisonValue);
+
+        case "greaterThanOrEqual":
+          return Number(fieldValue) >= Number(comparisonValue);
+
+        case "lessThanOrEqual":
+          return Number(fieldValue) <= Number(comparisonValue);
+
+        default:
+          return false;
+      }
+    });
+  });
+}
+
 async function askAboutDocument(
   data,
   metadata,
@@ -347,7 +386,8 @@ Return:
     "elementName": "",
     "fieldName": "",
     "secondaryFieldName": "",
-    "searchTerm": ""
+    "searchTerm": "",
+    "conditions": []
   }
   
   Use the available XML elements to identify the correct element name. For calculations, choose the element that contains the requested field, especially when the document root contains repeated child records.
@@ -403,6 +443,26 @@ Return:
         return `${index + 1}. ${fields}`;
       })
       .join("\n\n----------------\n\n")}`;
+  }
+
+  if (intent.intent === "filter") {
+    const elementName = intent.elementName.toLowerCase();
+
+    const results = filterElements(data, elementName, intent.conditions);
+
+    if (results.length === 0) {
+      return `I couldn't find any ${elementName} records matching those conditions.`;
+    }
+
+    return `I found ${results.length} matching ${elementName} records:\n\n${results
+      .map((result, index) => {
+        const fields = Object.entries(result)
+          .map(([key, value]) => `   ${key}: ${value}`)
+          .join("\n");
+
+        return `${index + 1}. ${fields}`;
+      })
+      .join("\n\n")}`;
   }
 
   if (intent.intent === "calculate") {
