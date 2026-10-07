@@ -144,6 +144,7 @@ function findMinElement(data, elementName, fieldName) {
   }
   return minElement;
 }
+function filterElement() {}
 async function askAboutDocument(
   data,
   metadata,
@@ -280,12 +281,68 @@ Return:
     "secondaryFieldName": "",
     "searchTerm": ""
 }
+  4. "filter" if the user wants to find records that match one or more conditions.
 
-  4. "general" for anything else.
+  For "filter":
+- elementName should contain the type of record being filtered.
+- conditions should contain one or more conditions.
+- Each condition must contain:
+  - fieldName: the field being evaluated.
+  - operator: the comparison being requested.
+  - value: the value being compared against.
+
+  Supported operators:
+- "equals"
+- "notEquals"
+- "greaterThan"
+- "lessThan"
+- "greaterThanOrEqual"
+- "lessThanOrEqual"
+
+Example:
+Question: "Find products in Electronics that cost more than $500."
+
+Return:
+{
+  "intent": "filter",
+  "operation": "",
+  "elementName": "product",
+  "conditions": [
+    {
+      "fieldName": "category",
+      "operator": "equals",
+      "value": "Electronics"
+    },
+    {
+      "fieldName": "price",
+      "operator": "greaterThan",
+      "value": 500
+    }
+  ]
+}
+
+Example:
+Question: "Find vehicles with mileage greater than 20000."
+
+Return:
+{
+  "intent": "filter",
+  "operation": "",
+  "elementName": "vehicle",
+  "conditions": [
+    {
+      "fieldName": "mileage",
+      "operator": "greaterThan",
+      "value": 20000
+    }
+  ]
+}
+
+  5. "general" for anything else.
   
   Return only valid JSON in this format:
   {
-    "intent": "count" | "search" | "calculate" | "general",
+    "intent": "count" | "search" | "calculate" | "general" | "filter",
     "operation": "",
     "elementName": "",
     "fieldName": "",
