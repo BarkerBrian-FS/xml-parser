@@ -104,6 +104,38 @@ function averageElementValue(data, elementName, fieldName) {
   }
   return total / count;
 }
+function findMaxElement(data, elementName, fieldName) {
+  const elements = findElements(data, elementName);
+
+  let maxElement = null;
+  let maxValue = -Infinity;
+
+  for (const element of elements) {
+    const value = Number(element[fieldName]);
+
+    if (!Number.isNaN(value) && value > maxValue) {
+      maxValue = value;
+      maxElement = element;
+    }
+  }
+  return maxElement;
+}
+function findMinElement(data, elementName, fieldName) {
+  const elements = findElements(data, elementName);
+
+  let minElement = null;
+  let minValue = Infinity;
+
+  for (const element of elements) {
+    const value = Number(element[fieldName]);
+
+    if (!Number.isNaN(value) && value < minValue) {
+      minValue = value;
+      minElement = element;
+    }
+  }
+  return minElement;
+}
 async function askAboutDocument(
   data,
   metadata,
@@ -119,20 +151,76 @@ async function askAboutDocument(
   Possible intents:
 
   1. "count" if the user wants to know how many elements or records exist.
+  
   2. "search" if the user wants to find specific records.
+
+  For "search":
+- elementName should contain the type of record being searched.
+- searchTerm should contain the value the user wants to find.
+- fieldName should contain the specific field being searched when the user identifies one.
+- If the user is searching across the entire record without specifying a field, fieldName should be empty.
+
+Example:
+Question: "Find products in the Electronics category."
+Return:
+{
+    "intent": "search",
+    "operation": "",
+    "elementName": "product",
+    "fieldName": "category",
+    "secondaryFieldName": "",
+    "searchTerm": "Electronics"
+}
+
+Example:
+Question: "Find products containing the word laptop."
+Return:
+{
+    "intent": "search",
+    "operation": "",
+    "elementName": "product",
+    "fieldName": "",
+    "secondaryFieldName": "",
+    "searchTerm": "laptop"
+}
   3. "calculate" for calculations using document data.
 
 For calculations, determine the operation:
 - "sum" when adding values from a single field.
+- "average" when calculating the average value of a numeric field across records.
+- "max" when finding the record with the highest numeric value in a field.
+- "min" when finding the record with the lowest numeric value in a field.
 - "sum_product" when calculating the total value by multiplying two fields for each record and then adding those results together.
 
 For "sum":
 - fieldName should contain the field being summed.
 - secondaryFieldName should be empty.
 
+Question: "What is the mileage across all vehicles?"
+Return:
+{
+    "intent": "calculate",
+    "operation": "sum",
+    "elementName": "vehicle",
+    "fieldName": "mileage",
+    "secondaryFieldName": "",
+    "searchTerm": ""
+}
+
 For "sum_product":
 - fieldName should contain the first field.
 - secondaryFieldName should contain the second field.
+
+Question: "What is the total value of stock across the entire catalog?"
+Return:
+{
+    "intent": "calculate",
+    "operation": "sum_product",
+    "elementName": "product",
+    "fieldName": "price",
+    "secondaryFieldName": "stock",
+    "searchTerm": ""
+}
 
 For "average"
 - fieldName should contain a numeric field being averaged.
@@ -151,25 +239,37 @@ Return:
   "searchTerm": ""
 }
 
-Question: "What is the mileage across all vehicles?"
+For "max":
+- fieldName should contain the numeric field being compared.
+- elementName should be the record or element that contains the field.
+- Do not use the document root element unless the field is directly contained within it.
+
+Example:
+Question: "Which vehicle has the highest mileage?"
 Return:
 {
     "intent": "calculate",
-    "operation": "sum",
+    "operation": "max",
     "elementName": "vehicle",
     "fieldName": "mileage",
     "secondaryFieldName": "",
     "searchTerm": ""
 }
 
-Question: "What is the total value of stock across the entire catalog?"
+For "min"
+- fieldName should contain the numeric field being compared.
+- elementName should be the record or element that contains the field.
+- Do not use the document root element unless the field is directly contained within it.
+
+Example:
+Question: "Which vehicle has the lowest mileage?"
 Return:
 {
     "intent": "calculate",
-    "operation": "sum_product",
-    "elementName": "product",
-    "fieldName": "price",
-    "secondaryFieldName": "stock",
+    "operation": "min",
+    "elementName": "vehicle",
+    "fieldName": "mileage",
+    "secondaryFieldName": "",
     "searchTerm": ""
 }
 
@@ -259,6 +359,10 @@ Return:
       );
     } else if (intent.operation === "average") {
       total = averageElementValue(data, elementName, fieldName);
+    } else if (intent.operation === "max") {
+      total = findMaxElement(data, elementName, fieldName);
+    } else if (intent.operation === "min") {
+      total = findMinElement(data, elementName, fieldName);
     } else {
       total = sumElementValues(data, elementName, fieldName);
     }
@@ -274,6 +378,19 @@ Return:
           maximumFractionDigits: 2,
         },
       )}`;
+    }
+    if (intent.operation === "average") {
+      return `The average ${fieldName} across all ${elementName}s is ${total.toLocaleString()}.`;
+    }
+    if (intent.operation === "max") {
+      return `The ${elementName} with the highest ${fieldName} has a value of ${Number(
+        total[fieldName],
+      ).toLocaleString()}.`;
+    }
+    if (intent.operation === "min") {
+      return `The ${elementName} with the lowest ${fieldName} has a value of ${Number(
+        total[fieldName],
+      ).toLocaleString()}.`;
     }
 
     return `The total ${fieldName} across all ${elementName}s is ${total.toLocaleString()}.`;
