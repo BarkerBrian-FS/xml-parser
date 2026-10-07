@@ -85,6 +85,25 @@ function sumProductValues(data, elementName, fieldA, fieldB) {
   }
   return total;
 }
+function averageElementValue(data, elementName, fieldName) {
+  const elements = findElements(data, elementName);
+
+  let total = 0;
+  let count = 0;
+
+  for (const element of elements) {
+    const value = Number(element[fieldName]);
+
+    if (!Number.isNaN(value)) {
+      total += value;
+      count++;
+    }
+  }
+  if (count === 0) {
+    return null;
+  }
+  return total / count;
+}
 async function askAboutDocument(
   data,
   metadata,
@@ -115,6 +134,23 @@ For "sum_product":
 - fieldName should contain the first field.
 - secondaryFieldName should contain the second field.
 
+For "average"
+- fieldName should contain a numeric field being averaged.
+- secondaryFieldName should be empty.
+- elementName should be the record or element that contains the field being averaged.
+- Do not use the document root element unless the field is directly contained within it.
+
+Question: "what is the avarge mileage of all the vehicles?"
+Return: 
+{
+  "intent": "calculate",
+  "operation": "average",
+  "elementName": "vehicle",
+  "fieldname": "mileage",
+  "secondaryFieldName": "",
+  "searchTerm": ""
+}
+
 Question: "What is the mileage across all vehicles?"
 Return:
 {
@@ -142,13 +178,14 @@ Return:
   Return only valid JSON in this format:
   {
     "intent": "count" | "search" | "calculate" | "general",
+    "operation": "",
     "elementName": "",
     "fieldName": "",
     "secondaryFieldName": "",
     "searchTerm": ""
   }
   
-  Use the available XML elements to identify the correct element name.
+  Use the available XML elements to identify the correct element name. For calculations, choose the element that contains the requested field, especially when the document root contains repeated child records.
 
   Available XML elements: ${JSON.stringify(metadata?.elements || [])}
 
@@ -220,9 +257,12 @@ Return:
         fieldName,
         secondaryFieldName,
       );
+    } else if (intent.operation === "average") {
+      total = averageElementValue(data, elementName, fieldName);
     } else {
       total = sumElementValues(data, elementName, fieldName);
     }
+
     console.log("Calculation intent:", intent);
     console.log("Calculated total:", total);
 
