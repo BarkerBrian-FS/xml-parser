@@ -47,14 +47,22 @@ function findElements(data, elementName) {
   return results;
 }
 
-function searchElements(data, elementName, searchTerm) {
+function searchElements(data, elementName, fieldName, searchTerm) {
   const elements = findElements(data, elementName);
 
   const lowerSearchTerm = searchTerm.toLowerCase();
 
-  return elements.filter((element) =>
-    JSON.stringify(element).toLowerCase().includes(lowerSearchTerm),
-  );
+  return elements.filter((element) => {
+    if (fieldName) {
+      const value = element[fieldName];
+
+      return (
+        value !== undefined &&
+        String(value).toLocaleLowerCase().includes(lowerSearchTerm)
+      );
+    }
+    return JSON.stringify(element).toLowerCase().includes(lowerSearchTerm);
+  });
 }
 function sumElementValues(data, elementName, fieldName) {
   const elements = findElements(data, elementName);
@@ -151,7 +159,7 @@ async function askAboutDocument(
   Possible intents:
 
   1. "count" if the user wants to know how many elements or records exist.
-  
+
   2. "search" if the user wants to find specific records.
 
   For "search":
@@ -234,7 +242,7 @@ Return:
   "intent": "calculate",
   "operation": "average",
   "elementName": "vehicle",
-  "fieldname": "mileage",
+  "fieldName": "mileage",
   "secondaryFieldName": "",
   "searchTerm": ""
 }
@@ -300,6 +308,8 @@ Return:
     },
   });
 
+  console.log("Intent response:", intentResponse.text);
+
   const intent = JSON.parse(intentResponse.text);
 
   if (intent.intent === "count") {
@@ -317,29 +327,25 @@ Return:
   if (intent.intent === "search") {
     const elementName = intent.elementName.toLowerCase();
     const searchTerm = intent.searchTerm.trim();
+    const fieldName = intent.fieldName.toLowerCase();
 
-    const results = searchElements(data, elementName, searchTerm);
+    const results = searchElements(data, elementName, fieldName, searchTerm);
+
+    console.log("Search results:", results);
 
     if (results.length === 0) {
       return `I couldn't find any ${elementName} elements matching ${searchTerm}.`;
     }
 
-    const prompt = `Answer the user's question using the retrieved document records below.
-    Present the results in a clean, readable way.
-    
-    Do not invent or modify any information. 
-    Only use the provided records.
-    
-    User question: ${question}
-    
-    Retrieved records: ${JSON.stringify(results, null, 2)}`;
+    return `I found ${results.length} matching ${elementName} records:\n\n${results
+      .map((result, index) => {
+        const fields = Object.entries(result)
+          .map(([key, value]) => `   ${key}: ${value}`)
+          .join("\n");
 
-    const response = await generateWithRetry({
-      model: MODEL,
-      contents: prompt,
-    });
-
-    return response.text;
+        return `${index + 1}. ${fields}`;
+      })
+      .join("\n\n----------------\n\n")}`;
   }
 
   if (intent.intent === "calculate") {

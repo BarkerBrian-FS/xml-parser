@@ -299,7 +299,7 @@ const DocumentCard = ({ doc, onDelete }) => {
                   <div key={index} className={`chat-message ${message.role}`}>
                     <strong>{message.role === "user" ? "You" : "AI"}</strong>
 
-                    <p>{message.content}</p>
+                    <p style={{ whiteSpace: "pre-line" }}>{message.content}</p>
                   </div>
                 ))}
               {isAsking && (
