@@ -10,12 +10,13 @@ const connectDB = require("./config/db");
 const mongoose = require("mongoose");
 const PDFDocument = require("pdfkit");
 const Document = require("./models/Documents.js");
+const authRoutes = require("./routes/authRoutes.js");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.text({ type: "application/xml" }));
-
+app.use("/api/auth", authRoutes);
 const PORT = 5000;
 connectDB(process.env.MONGO_URI);
 
