@@ -226,6 +226,16 @@ Return:
     console.log("Calculation intent:", intent);
     console.log("Calculated total:", total);
 
+    if (intent.operation === "sum_product") {
+      return `The total inventory value across all ${elementName}s is $${total.toLocaleString(
+        undefined,
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        },
+      )}`;
+    }
+
     return `The total ${fieldName} across all ${elementName}s is ${total.toLocaleString()}.`;
   }
 
