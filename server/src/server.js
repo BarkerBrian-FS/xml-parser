@@ -375,7 +375,7 @@ app.post("/api/xml/analyze", protect, async (req, res) => {
 });
 
 /* PATCH Routes */
-app.patch("/api/xml/documents/:id", async (req, res) => {
+app.patch("/api/xml/documents/:id", protect, async (req, res) => {
   try {
     const { title } = req.body;
 
@@ -385,8 +385,11 @@ app.patch("/api/xml/documents/:id", async (req, res) => {
       });
     }
 
-    const document = await Document.findByIdAndUpdate(
-      req.params.id,
+    const document = await Document.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        userId: req.user._id,
+      },
       { title: title.trim() },
       { new: true, runValidators: true },
     );
