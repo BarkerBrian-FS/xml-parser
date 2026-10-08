@@ -312,6 +312,11 @@ app.post("/api/xml/ask", protect, async (req, res) => {
   try {
     const { documentId, question, messages } = req.body;
 
+    if (!mongoose.Types.ObjectId.isValid(documentId)) {
+      return res.status(400).json({
+        message: "Invalid document Id",
+      });
+    }
     const doc = await Document.findOne({
       _id: documentId,
       userId: req.user._id,
