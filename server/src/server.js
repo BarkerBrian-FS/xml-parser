@@ -408,10 +408,13 @@ app.patch("/api/xml/documents/:id", async (req, res) => {
 });
 
 /* DELETE Routes */
-app.delete("/api/xml/documents/:id", async (req, res) => {
+app.delete("/api/xml/documents/:id", protect, async (req, res) => {
   console.log("Hit delete route");
   try {
-    const document = await Document.findByIdAndDelete(req.params.id);
+    const document = await Document.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
 
     if (!document) {
       return res.status(404).json({
