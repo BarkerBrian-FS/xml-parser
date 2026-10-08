@@ -5,6 +5,7 @@ const User = require("../models/User.js");
 
 const router = express.Router();
 
+/* Registration Route */
 router.post("/register", async (req, res) => {
   try {
     console.log("1. Route Reached");
@@ -62,6 +63,54 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     console.error(500).json({
       message: "Server Error.",
+    });
+  }
+});
+
+/* Login Route */
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email or Password are required",
+      });
+    }
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid email of password",
+      });
+    }
+
+    const passwordMatches = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatches) {
+      return res.status(401).json({
+        message: "Invalid password",
+      });
+    }
+
+    const token = jwt.sign({ user: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.status(200).json({
+      message: "Login Successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Login Error:", error);
+
+    res.status(500).json({
+      message: "Server error",
     });
   }
 });
