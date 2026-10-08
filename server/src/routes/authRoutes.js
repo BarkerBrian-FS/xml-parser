@@ -2,8 +2,17 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.js");
+const protect = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
+
+/* Test Protect Route */
+router.get("/me", protect, (req, res) => {
+  res.status(200).json({
+    message: "You are authenticated",
+    user: req.user,
+  });
+});
 
 /* Registration Route */
 router.post("/register", async (req, res) => {
@@ -93,7 +102,7 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ user: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
