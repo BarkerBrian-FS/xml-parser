@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const PDFDocument = require("pdfkit");
 const Document = require("./models/Documents.js");
 const authRoutes = require("./routes/authRoutes.js");
+const protect = require("./middleware/authMiddleware.js");
 
 const app = express();
 app.use(cors());
@@ -326,7 +327,7 @@ app.post("/api/xml/ask", async (req, res) => {
   }
 });
 
-app.post("/api/xml/analyze", async (req, res) => {
+app.post("/api/xml/analyze", protect, async (req, res) => {
   try {
     const result = analyzeXML(req.body);
 
@@ -354,6 +355,7 @@ app.post("/api/xml/analyze", async (req, res) => {
     const document = await Document.create({
       ...result,
       aiAnalysis: analysis,
+      userId: req.user._id,
     });
 
     console.log("Saved document:");
