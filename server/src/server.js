@@ -54,7 +54,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.get("/api/xml/documents", async (req, res) => {
+app.get("/api/xml/documents", protect, async (req, res) => {
   try {
     const search = req.query.search;
 
@@ -70,7 +70,7 @@ app.get("/api/xml/documents", async (req, res) => {
         }
       : {};
 
-    const documents = await Document.find(query);
+    const documents = await Document.find({ ...query, userId: req.user._id });
 
     res.json(documents);
   } catch (error) {
@@ -81,7 +81,7 @@ app.get("/api/xml/documents", async (req, res) => {
   }
 });
 
-app.get("/api/xml/documents/:id", async (req, res) => {
+app.get("/api/xml/documents/:id", protect, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({
@@ -89,10 +89,13 @@ app.get("/api/xml/documents/:id", async (req, res) => {
       });
     }
 
-    const document = await Document.findById(req.params.id);
+    const document = await Document.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
 
     if (!document) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Document not found",
       });
     }
