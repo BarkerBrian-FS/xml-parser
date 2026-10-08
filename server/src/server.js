@@ -219,14 +219,17 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
   }
 });
 
-app.get("/api/xml/documents/:id/json", async (req, res) => {
+app.get("/api/xml/documents/:id/json", protect, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({
         message: "Invalid document Id",
       });
     }
-    const document = await Document.findById(req.params.id);
+    const document = await Document.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
 
     if (!document) {
       return res.status(404).json({
