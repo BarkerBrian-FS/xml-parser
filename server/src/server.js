@@ -307,12 +307,15 @@ app.get("/api/xml/documents/:id/xml", protect, async (req, res) => {
 });
 
 /* POST Routes */
-app.post("/api/xml/ask", async (req, res) => {
+app.post("/api/xml/ask", protect, async (req, res) => {
   console.log("Hit ask route");
   try {
     const { documentId, question, messages } = req.body;
 
-    const doc = await Document.findById(documentId);
+    const doc = await Document.findOne({
+      _id: documentId,
+      userId: req.user._id,
+    });
 
     if (!doc) {
       return res.status(404).json({
