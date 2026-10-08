@@ -109,14 +109,17 @@ app.get("/api/xml/documents/:id", protect, async (req, res) => {
 });
 
 /* Export Routes PDF JSON and XML */
-app.get("/api/xml/documents/:id/pdf", async (req, res) => {
+app.get("/api/xml/documents/:id/pdf", protect, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({
         message: "Invalid document Id",
       });
     }
-    const document = await Document.findById(req.params.id);
+    const document = await Document.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
 
     if (!document) {
       return res.status(404).json({
@@ -129,7 +132,7 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
 
     res.setHeader(
       "Content-Disposition",
-      `attachment; filname-"document-${document._id}.pdf"`,
+      `attachment; filename-"document-${document._id}.pdf"`,
     );
 
     pdf.pipe(res);
@@ -214,7 +217,7 @@ app.get("/api/xml/documents/:id/pdf", async (req, res) => {
     console.error(error);
 
     res.status(500).json({
-      message: "Faidled to generate PDF",
+      message: "Failed to generate PDF",
     });
   }
 });
