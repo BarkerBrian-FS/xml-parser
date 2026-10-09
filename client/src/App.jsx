@@ -290,6 +290,7 @@ function App() {
             <DocumentCard
               key={doc._id}
               doc={doc}
+              token={token}
               onDelete={handleDeleteDocument}
             />
           ))

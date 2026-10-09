@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const DocumentCard = ({ doc, onDelete }) => {
+const DocumentCard = ({ doc, onDelete, token }) => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [isAsking, setIsAsking] = useState(false);
@@ -15,7 +15,7 @@ const DocumentCard = ({ doc, onDelete }) => {
       ...previousMessages,
       {
         role: "user",
-        content: question,
+        content: questionText,
       },
       setQuestion(""),
     ]);
@@ -25,6 +25,7 @@ const DocumentCard = ({ doc, onDelete }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           documentId: documentId,
@@ -66,6 +67,9 @@ const DocumentCard = ({ doc, onDelete }) => {
         `http://localhost:5000/api/xml/documents/${documentId}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
       );
       const data = await response.json();
@@ -89,6 +93,7 @@ const DocumentCard = ({ doc, onDelete }) => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             title: title,
