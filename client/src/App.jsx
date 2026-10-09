@@ -1,6 +1,7 @@
 import "./App.css";
 import DocumentCard from "./components/DocumentCard";
 import { useEffect, useState } from "react";
+import Auth from "./components/Auth";
 
 function App() {
   const [documents, setDocuments] = useState([]);
@@ -26,6 +27,38 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  async function handleAuth(event) {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/auth/${isRegistering ? "register" : "login"}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...(isRegistering && { name }),
+            email,
+            password,
+          }),
+        },
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Authentication failed");
+      }
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      setToken(data.token);
+      setUser(data.user);
+    } catch (error) {
+      console.error("Authentication failed", error);
+    }
+  }
   function handleFileChange(event) {
     const file = event.target.files[0];
 
@@ -80,6 +113,7 @@ function App() {
         method: "POST",
         headers: {
           "Content-Type": "application/xml",
+          Authorization: `Bearer ${token}`,
         },
         body: xmlContent,
       });
@@ -108,8 +142,19 @@ function App() {
   }
 
   useEffect(() => {
+    if (!token) {
+      setIsLoadingDocuments(false);
+      return;
+    }
+    setIsLoadingDocuments(true);
+    setDocumentsError("");
     fetch(
       `http://localhost:5000/api/xml/documents?search=${encodeURIComponent(search)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     )
       .then((response) => {
         if (!response.ok) {
@@ -128,7 +173,7 @@ function App() {
       .finally(() => {
         setIsLoadingDocuments(false);
       });
-  }, [search]);
+  }, [search, token]);
   const filteredDocuments = documents.filter((doc) => {
     if (filter === "warnings") {
       return doc.aiAnalysis?.warnings?.length > 0;
@@ -158,6 +203,21 @@ function App() {
     return 0;
   });
 
+  if (!token) {
+    return (
+      <Auth
+        isRegistering={isRegistering}
+        setIsRegistering={setIsRegistering}
+        name={name}
+        setName={setName}
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        handleAuth={handleAuth}
+      />
+    );
+  }
   return (
     <main className={`app ${darkMode ? "dark" : ""}`}>
       <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
