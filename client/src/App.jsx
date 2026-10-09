@@ -15,6 +15,16 @@ function App() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
   const [filter, setFilter] = useState("all");
+  /* authentication state */
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+  const [user, setUser] = useState(() =>
+    JSON.parse(localStorage.getItem("user") || null),
+  );
+  /* Login and Registration state */
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleFileChange(event) {
     const file = event.target.files[0];

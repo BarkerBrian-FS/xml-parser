@@ -357,6 +357,7 @@ app.post("/api/xml/analyze", protect, async (req, res) => {
 
     const existingDocument = await Document.findOne({
       originalXml: req.body,
+      userId: req.user._id,
     });
     if (existingDocument) {
       return res.status(409).json({
