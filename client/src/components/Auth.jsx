@@ -1,4 +1,4 @@
-const Auth = (
+const Auth = ({
   isRegistering,
   setIsRegistering,
   name,
@@ -8,7 +8,7 @@ const Auth = (
   password,
   setPassword,
   handleAuth,
-) => {
+}) => {
   return (
     <main className="app auth-container">
       <form className="auth-form" onSubmit={handleAuth}>

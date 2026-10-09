@@ -111,6 +111,43 @@ const DocumentCard = ({ doc, onDelete, token }) => {
     }
   }
 
+  async function handleExport(format) {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/xml/documents/${doc._id}/${format}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to export ${format.toUpperCase()}`);
+      }
+      // if (!response.ok) {
+      //   const errorText = await response.text();
+
+      //   console.error("Export status:", response.status);
+      //   console.error("Export response:", errorText);
+
+      //   throw new Error(`Failed to export ${format.toUpperCase()}`);
+      // }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = `document-${doc._id}.{format}`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Export failed:", error);
+    }
+  }
+
   function formatStatName(name) {
     return name
       .replace(/([A-Z])/g, " $1")
@@ -169,36 +206,9 @@ const DocumentCard = ({ doc, onDelete, token }) => {
         </div>
         <pre className="xml-viewer">{doc.originalXml}</pre>
         <div className="document-actions">
-          <button
-            onClick={() =>
-              window.open(
-                `http://localhost:5000/api/xml/documents/${doc._id}/pdf`,
-                "_blank",
-              )
-            }
-          >
-            Export PDF
-          </button>
-          <button
-            onClick={() =>
-              window.open(
-                `http://localhost:5000/api/xml/documents/${doc._id}/json`,
-                "_blank",
-              )
-            }
-          >
-            Export JSON
-          </button>
-          <button
-            onClick={() =>
-              window.open(
-                `http://localhost:5000/api/xml/documents/${doc._id}/xml`,
-                "_blank",
-              )
-            }
-          >
-            Export XML
-          </button>
+          <button onClick={() => handleExport("pdf")}>Export PDF</button>
+          <button onClick={() => handleExport("json")}>Export JSON</button>
+          <button onClick={() => handleExport("xml")}>Export XML</button>
         </div>
         <div className="ai-analysis">
           <h3>AI Analysis</h3>
