@@ -59,6 +59,7 @@ function App() {
       console.error("Authentication failed", error);
     }
   }
+
   function handleFileChange(event) {
     const file = event.target.files[0];
 
@@ -78,14 +79,17 @@ function App() {
     };
     reader.readAsText(file);
   }
+
   function handleDragOver(event) {
     event.preventDefault();
     setIsDragging(false);
   }
+
   function handleDragLeave(event) {
     event.preventDefault();
     setIsDragging(false);
   }
+
   function handleDrop(event) {
     event.preventDefault();
     setIsDragging(false);
@@ -102,6 +106,7 @@ function App() {
       },
     });
   }
+
   async function handleAnalyze() {
     setIsAnalyzing(true);
     setError("");
@@ -135,10 +140,24 @@ function App() {
       setIsAnalyzing(false);
     }
   }
+
   function handleDeleteDocument(documentId) {
     setDocuments((currentDocuments) =>
       currentDocuments.filter((document) => document._id !== documentId),
     );
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setToken("");
+    setUser(null);
+    setDocuments([]);
+    setXmlContent("");
+    setFileName("");
+    setError("");
+    setDocumentsError("");
   }
 
   useEffect(() => {
@@ -222,6 +241,10 @@ function App() {
     <main className={`app ${darkMode ? "dark" : ""}`}>
       <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
         {darkMode ? "Light Mode" : "Dark Mode"}
+      </button>
+
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
       </button>
 
       <div
