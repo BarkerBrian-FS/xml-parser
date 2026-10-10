@@ -217,6 +217,21 @@
   border: 1px solid rgba(248, 113, 113, 0.3);
   border-radius: 8px;
 }
+
+.auth-form > button[type="submit"]:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+.auth-success {
+  margin: 0;
+  padding: 12px 14px;
+  color: #86efac;
+  font-size: 0.875rem;
+  background: rgba(20, 83, 45, 0.2);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: 8px;
+}
 /* Mobile layout */
 @media (max-width: 480px) {
   .auth-container {

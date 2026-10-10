@@ -12,6 +12,8 @@ const Auth = ({
   setPassword,
   handleAuth,
   authError,
+  authSuccess,
+  isAuthLoading,
 }) => {
   return (
     <main className="auth-container">
@@ -46,9 +48,25 @@ const Auth = ({
           onChange={(event) => setPassword(event.target.value)}
           required
         />
-        {authError && <p className="auth-error">{authError}</p>}
-        <button type="submit">{isRegistering ? "Register" : "Login"}</button>
-
+        {authError && (
+          <p className="auth-error" role="alert">
+            {authError}
+          </p>
+        )}
+        {authSuccess && (
+          <p className="auth-error" role="alert">
+            {authSuccess}
+          </p>
+        )}
+        <button type="submit" disabled={isAuthLoading}>
+          {isAuthLoading
+            ? isRegistering
+              ? "Creating Account..."
+              : "Logging In..."
+            : isRegistering
+              ? "Register"
+              : "Login"}
+        </button>
         <p>
           {isRegistering
             ? "Already have an account?"

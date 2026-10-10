@@ -22,15 +22,21 @@ function App() {
     JSON.parse(localStorage.getItem("user") || null),
   );
   const [authError, setAuthError] = useState("");
+  const [authSuccess, setAuthSuccess] = useState("");
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
   /* Login and Registration state */
   const [isRegistering, setIsRegistering] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [dashboardMessage, setDashboardMessage] = useState("");
+
   async function handleAuth(event) {
     event.preventDefault();
     setAuthError("");
+    setAuthSuccess("");
+    setIsAuthLoading(true);
 
     try {
       const response = await fetch(
@@ -58,6 +64,9 @@ function App() {
       setToken(data.token);
       setUser(data.user);
       setAuthError("");
+      if (isRegistering) {
+        setDashboardMessage("Account created successfully!");
+      }
     } catch (error) {
       console.error("Authentication failed", error);
       setAuthError(
@@ -65,6 +74,8 @@ function App() {
           ? "Unable to connect to the server. Please try again."
           : error.message || "Something went wrong. Please try again.",
       );
+    } finally {
+      setIsAuthLoading(false);
     }
   }
 
@@ -253,6 +264,8 @@ function App() {
         setPassword={setPassword}
         handleAuth={handleAuth}
         authError={authError}
+        authSuccess={authSuccess}
+        isAuthLoading={isAuthLoading}
       />
     );
   }
@@ -266,7 +279,11 @@ function App() {
           {darkMode ? "Light Mode" : "Dark Mode"}
         </button>
       </div>
-
+      {dashboardMessage && (
+        <p className="auth-success" role="status">
+          {dashboardMessage}
+        </p>
+      )}
       <div
         className={`xml-upload ${isDragging ? "dragging" : ""}`}
         onDragOver={handleDragOver}
