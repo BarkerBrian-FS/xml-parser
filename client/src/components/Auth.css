@@ -31,6 +31,19 @@
   color: #f1f5f9;
 }
 
+/* XML Brand Icon */
+.auth-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2px;
+}
+
+.auth-brand-icon svg {
+  display: block;
+  filter: drop-shadow(0 0 18px rgba(59, 130, 246, 0.12));
+}
+
 /* Ambient background glow */
 .auth-container::before,
 .auth-container::after {
@@ -192,6 +205,18 @@
   outline-offset: 4px;
 }
 
+/* Error handling*/
+.auth-error {
+  margin: 0;
+  padding: 12px 14px;
+  color: #fca5a5;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: left;
+  background: rgba(127, 29, 29, 0.2);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 8px;
+}
 /* Mobile layout */
 @media (max-width: 480px) {
   .auth-container {

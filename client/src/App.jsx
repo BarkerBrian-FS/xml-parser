@@ -21,6 +21,7 @@ function App() {
   const [user, setUser] = useState(() =>
     JSON.parse(localStorage.getItem("user") || null),
   );
+  const [authError, setAuthError] = useState("");
   /* Login and Registration state */
   const [isRegistering, setIsRegistering] = useState(false);
   const [name, setName] = useState("");
@@ -29,6 +30,7 @@ function App() {
 
   async function handleAuth(event) {
     event.preventDefault();
+    setAuthError("");
 
     try {
       const response = await fetch(
@@ -55,8 +57,14 @@ function App() {
 
       setToken(data.token);
       setUser(data.user);
+      setAuthError("");
     } catch (error) {
       console.error("Authentication failed", error);
+      setAuthError(
+        error instanceof TypeError
+          ? "Unable to connect to the server. Please try again."
+          : error.message || "Something went wrong. Please try again.",
+      );
     }
   }
 
@@ -244,18 +252,20 @@ function App() {
         password={password}
         setPassword={setPassword}
         handleAuth={handleAuth}
+        authError={authError}
       />
     );
   }
   return (
     <main className={`app ${darkMode ? "dark" : ""}`}>
-      <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-        {darkMode ? "Light Mode" : "Dark Mode"}
-      </button>
-
-      <button className="logout-button" onClick={handleLogout}>
-        Logout
-      </button>
+      <div className="top-buttons">
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+        <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+      </div>
 
       <div
         className={`xml-upload ${isDragging ? "dragging" : ""}`}

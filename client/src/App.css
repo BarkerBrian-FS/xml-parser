@@ -217,6 +217,12 @@ body:has(.app.dark) {
   text-align: center;
 }
 
+/* Top Buttons Flex box */
+.top-buttons {
+  display: flex;
+  direction: row;
+}
+
 /* Dark Theme Button */
 .theme-toggle {
   display: block;
@@ -241,6 +247,24 @@ body:has(.app.dark) {
   font-size: 32px;
 }
 
+/* Logout Button */
+.logout-button {
+  display: block;
+  margin-right: auto;
+  margin-bottom: 24px;
+  padding: 10px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.logout-button:hover {
+  background: #f3f4f6;
+}
 /* Drag And Drop */
 .xml-upload {
   padding: 40px;

@@ -1,4 +1,5 @@
 import "./Auth.css";
+import XmlBrandIcon from "./XmlBrand";
 
 const Auth = ({
   isRegistering,
@@ -10,10 +11,14 @@ const Auth = ({
   password,
   setPassword,
   handleAuth,
+  authError,
 }) => {
   return (
     <main className="auth-container">
       <form className="auth-form" onSubmit={handleAuth}>
+        <div className="auth-brand-icon">
+          <XmlBrandIcon size={100} />
+        </div>
         <h1>AI Data Intelligence Platform</h1>
         <h2>{isRegistering ? "Create Account" : "Welcome Back"}</h2>
         {isRegistering && (
@@ -41,7 +46,7 @@ const Auth = ({
           onChange={(event) => setPassword(event.target.value)}
           required
         />
-
+        {authError && <p className="auth-error">{authError}</p>}
         <button type="submit">{isRegistering ? "Register" : "Login"}</button>
 
         <p>
