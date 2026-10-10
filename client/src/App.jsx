@@ -175,9 +175,19 @@ function App() {
         },
       },
     )
+      // .then((response) => {
+      //   if (!response.ok) {
+      //     throw new Error("Failed to load documents");
+      //   }
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to load documents");
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+
+          setToken("");
+          setUser(null);
+
+          throw new Error("Your session has expired. Please log in again.");
         }
         return response.json();
       })

@@ -1,3 +1,5 @@
+import "./Auth.css";
+
 const Auth = ({
   isRegistering,
   setIsRegistering,
@@ -10,7 +12,7 @@ const Auth = ({
   handleAuth,
 }) => {
   return (
-    <main className="app auth-container">
+    <main className="auth-container">
       <form className="auth-form" onSubmit={handleAuth}>
         <h1>AI Data Intelligence Platform</h1>
         <h2>{isRegistering ? "Create Account" : "Welcome Back"}</h2>
